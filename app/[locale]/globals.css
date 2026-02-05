@@ -1,0 +1,121 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* base */
+  --background: #ede7d6;
+  --foreground: #2e2e2e;
+
+  /* surfaces */
+  --card: #ffffff;
+  --card-foreground: #2e2e2e;
+  --popover: #ffffff;
+  --popover-foreground: #2e2e2e;
+
+  /* brand */
+  --primary: #cce85b;
+  --primary-foreground: #2e2e2e;
+
+  --secondary: #2e2e2e;
+  --secondary-foreground: #ede7d6;
+
+  --accent: #ede7d6;
+  --accent-foreground: #2e2e2e;
+
+  /* ui */
+  --muted: #e6dfc9;
+  --muted-foreground: #5c5c5c;
+
+  --border: #d6d0be;
+  --input: #d6d0be;
+  --ring: #cce85b;
+
+  /* states */
+  --destructive: #d9534f;
+
+  /* charts */
+  --chart-1: #cce85b;
+  --chart-2: #2e2e2e;
+  --chart-3: #ede7d6;
+  --chart-4: #a4b84a;
+  --chart-5: #6b6b6b;
+}
+
+.dark {
+  /* base */
+  --background: #2e2e2e;
+  --foreground: #ede7d6;
+
+  /* surfaces */
+  --card: #3a3a3a;
+  --card-foreground: #ede7d6;
+  --popover: #3a3a3a;
+  --popover-foreground: #ede7d6;
+
+  /* brand */
+  --primary: #cce85b;
+  --primary-foreground: #2e2e2e;
+
+  --secondary: #ede7d6;
+  --secondary-foreground: #2e2e2e;
+
+  --accent: #3f3f3f;
+  --accent-foreground: #ede7d6;
+
+  /* ui */
+  --muted: #3f3f3f;
+  --muted-foreground: #bdb8aa;
+
+  --border: #4a4a4a;
+  --input: #4a4a4a;
+  --ring: #cce85b;
+
+  /* states */
+  --destructive: #e57373;
+
+  /* charts */
+  --chart-1: #cce85b;
+  --chart-2: #ede7d6;
+  --chart-3: #2e2e2e;
+  --chart-4: #a4b84a;
+  --chart-5: #9a9a9a;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
