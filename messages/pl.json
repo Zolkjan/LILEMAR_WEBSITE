@@ -1,5 +1,14 @@
 {
   "admin": {
     "heading": "STRONA ADMINA"
+  },
+  "navigation": {
+    "buttons": {
+      "about_us": "O nas",
+      "contact": "Kontakt",
+      "custom_furniture": "Meble na wymiar",
+      "home": "Strona główna",
+      "visualisations": "Wizualizacje wnętrz"
+    }
   }
 }

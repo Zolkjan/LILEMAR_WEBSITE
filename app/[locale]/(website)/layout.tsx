@@ -1,4 +1,6 @@
-import MainNavbar from "@/components/MainNavbar/MainNavbar";
+"use client";
+
+import MainNavbar from "@/components/navbar/MainNavbar/MainNavbar";
 
 const WebsiteLayout = ({
   children,
@@ -6,7 +8,7 @@ const WebsiteLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div>
+    <div className="w-full h-full flex items-center flex-col">
       <MainNavbar />
       {children}
     </div>

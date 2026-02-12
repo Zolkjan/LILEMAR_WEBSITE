@@ -1,5 +1,14 @@
 {
   "admin": {
     "heading": "ADMIN PAGE"
+  },
+  "navigation": {
+    "buttons": {
+      "about_us": "About us",
+      "contact": "Contact",
+      "custom_furniture": "Custom furniture",
+      "home": "Home",
+      "visualisations": "Interior visualizations"
+    }
   }
 }

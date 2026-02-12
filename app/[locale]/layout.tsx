@@ -30,7 +30,7 @@ const RootLayout = ({
   return (
     <html suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-full`}
       >
         <NextIntlClientProvider>
           <ThemeProvider
