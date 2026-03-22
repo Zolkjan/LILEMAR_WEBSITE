@@ -6,33 +6,25 @@ import { routing } from "./i18n/routing";
 const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(request: NextRequest) {
-  const intlResponse = intlMiddleware(request);
-  if (intlResponse) {
-    return intlResponse;
-  }
-
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("firebaseAuthToken")?.value;
 
-  if (pathname.startsWith("/admin")) {
-    if (!token) {
-      const loginUrl = new URL("/login", request.url);
-      return NextResponse.redirect(loginUrl);
-    }
+  const pathWithoutLocale = pathname.replace(/^\/(pl|en)/, "");
+
+  const isAdmin = pathWithoutLocale.startsWith("/admin");
+  const isLogin = pathWithoutLocale.startsWith("/login");
+
+  if (isAdmin && !token) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (pathname === "/login" && token) {
-    const adminUrl = new URL("/admin", request.url);
-    return NextResponse.redirect(adminUrl);
+  if (isLogin && token) {
+    return NextResponse.redirect(new URL("/admin", request.url));
   }
 
-  return NextResponse.next();
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/login",
-    "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
-  ],
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

@@ -2,9 +2,10 @@
 
 import React, { useRef } from "react";
 import { Button } from "../ui/button";
-import { MoveRight, Mail } from "lucide-react";
+import { MoveRight, Cuboid, Camera } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import Link from "next/link";
 
 const HomePageVideo = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -66,6 +67,7 @@ const HomePageVideo = () => {
       ref={containerRef}
       className="relative w-full h-svh overflow-hidden bg-background"
     >
+      {/* Tło Video z inteligentną nakładką */}
       <div className="absolute inset-0 z-0">
         <video
           className="video-bg object-cover w-full h-full"
@@ -75,59 +77,80 @@ const HomePageVideo = () => {
           playsInline
           src="/videos/main_video.mp4"
         />
-        <div className="absolute inset-0 bg-linear-to-b from-secondary/40 via-secondary/60 to-background" />
+        {/* Dynamiczny gradient: w light mode chroni czytelność, w dark mode wtapia się w tło */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background/90 dark:from-black/60 dark:to-background" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-foreground text-center">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center">
+        {/* Tag nad tytułem - wymuszamy widoczność przez bg-secondary w Light Mode */}
         <span
-          className="mb-4 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs md:text-sm font-medium tracking-[0.3em] uppercase opacity-0 animate-fade-in"
+          className="mb-6 px-5 py-2 rounded-full border border-primary/50 bg-secondary/80 dark:bg-primary/10 text-primary dark:text-primary text-xs md:text-sm font-bold tracking-[0.3em] uppercase opacity-0 shadow-lg"
           style={{ animation: "fadeIn 1s forwards 0.5s" }}
         >
-          Architektura & Wnętrza
+          Architektura & Wykonawstwo
         </span>
 
+        {/* Tytuł: Używamy text-foreground, który automatycznie zmienia kolor #2e2e2e <-> #ede7d6 */}
         <h1
           ref={titleRef}
-          className="text-5xl md:text-7xl lg:text-[10rem] font-black max-w-6xl tracking-tighter leading-[0.85] mb-6 drop-shadow-2xl"
+          className="text-5xl md:text-7xl lg:text-[8.5rem] font-black max-w-7xl tracking-tighter leading-[0.85] mb-8 text-foreground drop-shadow-[0_5px_15px_rgba(0,0,0,0.2)] dark:drop-shadow-none"
         >
           Od wizji do <span className="text-primary italic">realizacji</span>
         </h1>
 
+        {/* Opis: text-muted-foreground zapewnia czytelność bez "krzyczenia" */}
         <p
           ref={descriptionRef}
-          className="text-lg md:text-xl max-w-2xl text-muted-foreground mb-10 leading-relaxed font-light"
+          className="text-lg md:text-2xl max-w-3xl text-foreground/80 dark:text-muted-foreground mb-12 leading-relaxed font-medium bg-background/20 backdrop-blur-sm md:bg-transparent rounded-lg p-4 md:p-0"
         >
-          Tworzymy przestrzenie, które inspirują. Od koncepcji, przez
-          fotorealistyczne wizualizacje, aż po perfekcyjne wykonanie mebli.
+          Projektujemy fotorealistyczne wnętrza 3D i tworzymy meble na wymiar,
+          łącząc świat cyfrowej precyzji z rzemieślniczą pasją.
         </p>
 
+        {/* PRZYCISKI */}
         <div
           ref={buttonsRef}
-          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+          className="flex flex-col md:flex-row gap-6 w-full max-w-2xl"
         >
-          <Button
-            size="lg"
-            className="nav-button bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-8 text-lg font-bold shadow-xl shadow-primary/20 transition-transform hover:scale-105 group"
-          >
-            Nasze Portfolio
-            <MoveRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          {/* Ścieżka: Wizualizacje */}
+          <Link href="/wizualizacje" className="flex-1">
+            <Button
+              size="lg"
+              className="nav-button w-full bg-primary text-primary-foreground hover:ring-4 hover:ring-primary/30 rounded-2xl px-8 py-12 text-xl font-black shadow-2xl transition-all hover:-translate-y-1 group"
+            >
+              <div className="flex flex-col items-center gap-2">
+                <Camera className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                <span>Wizualizacje 3D</span>
+                <span className="text-[10px] font-normal tracking-widest opacity-80">
+                  ZOBACZ PROJEKTY
+                </span>
+              </div>
+            </Button>
+          </Link>
 
-          <Button
-            variant="outline"
-            size="lg"
-            className="nav-button border-primary/40 text-foreground hover:bg-secondary hover:text-secondary-foreground rounded-full px-10 py-8 text-lg font-bold transition-all"
-          >
-            <Mail className="mr-2 w-5 h-5" />
-            Napisz do nas
-          </Button>
+          {/* Ścieżka: Meble */}
+          <Link href="/meble" className="flex-1">
+            <Button
+              variant="outline"
+              size="lg"
+              className="nav-button w-full border-2 border-primary/50 bg-background/50 backdrop-blur-md text-foreground hover:bg-secondary hover:text-secondary-foreground rounded-2xl px-8 py-12 text-xl font-black shadow-2xl transition-all hover:-translate-y-1 group"
+            >
+              <div className="flex flex-col items-center gap-2">
+                <Cuboid className="w-8 h-8 group-hover:scale-110 transition-transform text-primary" />
+                <span>Meble na wymiar</span>
+                <span className="text-[10px] font-normal tracking-widest opacity-60">
+                  ZOBACZ REALIZACJE
+                </span>
+              </div>
+            </Button>
+          </Link>
         </div>
 
         <div className="scroll-indicator absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground">
-            Odkryj
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-foreground dark:text-muted-foreground/60">
+            Zjedź niżej
           </span>
-          <div className="w-px h-16 bg-linear-to-b from-primary to-transparent" />
+          <div className="w-px h-16 bg-gradient-to-b from-primary to-transparent" />
         </div>
       </div>
 
@@ -135,9 +158,11 @@ const HomePageVideo = () => {
         @keyframes fadeIn {
           from {
             opacity: 0;
+            transform: translateY(-10px);
           }
           to {
             opacity: 1;
+            transform: translateY(0);
           }
         }
       `}</style>
