@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useRef } from "react";
 import { Button } from "../ui/button";
@@ -90,7 +90,7 @@ const HomePageVideo = () => {
           Architektura & Wykonawstwo
         </span>
 
-        {/* Tytuł: Używamy text-foreground, który automatycznie zmienia kolor #2e2e2e <-> #ede7d6 */}
+        {/* Tytuł: Używamy text-foreground, który automatycznie zmienia kolor #2F241D <-> #ede7d6 */}
         <h1
           ref={titleRef}
           className="text-5xl md:text-7xl lg:text-[8.5rem] font-black max-w-7xl tracking-tighter leading-[0.85] mb-8 text-foreground drop-shadow-[0_5px_15px_rgba(0,0,0,0.2)] dark:drop-shadow-none"
