@@ -16,7 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { NewProjectSchema, NewProjectSchemaType } from "@/zodSchema/newProject";
 import { Field, FieldGroup, FieldLabel, FieldError } from "../ui/field";
 import {
   Select,
@@ -28,28 +27,36 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ProjectModules, ProjectThemes } from "@/enums";
 import useSWRMutation from "swr/mutation";
-import { postFetcher } from "@/constans/apiFetcherFunction";
+import { patchFetcher, postFetcher } from "@/constans/apiFetcherFunction";
+import { roomTypeOptions } from "@/enums/selectOptions";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import {
+  NewVisualisationSchema,
+  NewVisualisationSchemaType,
+} from "@/zodSchema/newVisualization";
 
-const NewProjectForm = () => {
+const NewVisualizationForm = () => {
   const [previews, setPreviews] = useState<string[]>([]);
 
-  const form = useForm<NewProjectSchemaType>({
-    resolver: zodResolver(NewProjectSchema),
+  const form = useForm<NewVisualisationSchemaType>({
+    resolver: zodResolver(NewVisualisationSchema),
     defaultValues: {
       title: "",
       description: "",
       images: [],
       theme: ProjectThemes.LIGHT,
-      projectModule: ProjectModules.VISUALISATION,
+      roomType: undefined,
     },
   });
 
-  const { control, handleSubmit, reset } = form;
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = form;
 
-  const { trigger: createProject, isMutating: isLoading } = useSWRMutation(
-    "/api/projects/new",
-    postFetcher,
-  );
+  console.log(errors);
 
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -61,89 +68,83 @@ const NewProjectForm = () => {
     setPreviews(filePreviews);
   };
 
-  const onSubmit = async (data: NewProjectSchemaType) => {
-    const { images, ...rest } = data;
+  const { trigger: createProject, isMutating: isLoading } = useSWRMutation(
+    "/api/visualizations/new",
+    postFetcher,
+  );
+
+  const onSubmit = async (data: NewVisualisationSchemaType) => {
     try {
-      await createProject(rest);
-      console.log("Dane do Firebase:", data);
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("theme", data.theme);
+      formData.append("roomType", data.roomType);
+
+      data.images.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      await createProject(formData);
+
+      reset();
+      setPreviews([]);
     } catch (error) {
-      console.error(error);
+      console.error("Wystąpił błąd podczas wysyłania:", error);
     }
   };
-
-  useEffect(() => {
-    reset({
-      title: "",
-      description: "",
-      images: [],
-      theme: ProjectThemes.LIGHT,
-      projectModule: ProjectModules.VISUALISATION,
-    });
-  }, [reset]);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="max-w-4xl mx-auto space-y-8 pb-20"
     >
-      <FieldGroup className="space-y-8 bg-card p-6 md:p-8 rounded-2xl border border-border shadow-sm">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Controller
-            name="title"
-            control={control}
-            render={({ field, fieldState }) => (
-              <Field className="space-y-2">
-                <FieldLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Nazwa projektu
-                </FieldLabel>
-                <Input
-                  {...field}
-                  placeholder="Np. Loft Apartment"
-                  className="h-12 bg-background border-border focus-visible:ring-primary"
-                />
-                {fieldState.error && (
-                  <FieldError>{fieldState.error.message}</FieldError>
-                )}
-              </Field>
-            )}
-          />
-          <Controller
-            name="projectModule"
-            control={control}
-            render={({ field, fieldState }) => (
-              <Field className="space-y-2">
-                <FieldLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Typ Projektu
-                </FieldLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="h-12 bg-background border-border">
-                    <SelectValue placeholder="Wybierz typ" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={ProjectModules.VISUALISATION}>
-                      <div className="flex items-center gap-2">
-                        <Palette size={16} className="text-primary" />
-                        <span>Wizualizacja 3D</span>
-                      </div>
+      <FieldGroup className=" bg-card p-6 md:p-8 rounded-2xl border border-border shadow-sm">
+        <Controller
+          name="title"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field className="space-y-2">
+              <FieldLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Nazwa projektu
+              </FieldLabel>
+              <Input
+                {...field}
+                placeholder="Np. Loft Apartment"
+                className="h-12 bg-background border-border focus-visible:ring-primary"
+              />
+              {fieldState.error && (
+                <FieldError>{fieldState.error.message}</FieldError>
+              )}
+            </Field>
+          )}
+        />
+        <Controller
+          name="roomType"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field className="space-y-2">
+              <FieldLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Typ pomieszczenia
+              </FieldLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger className="h-12 bg-background border-border">
+                  <SelectValue placeholder="Wybierz typ" />
+                </SelectTrigger>
+                <SelectContent>
+                  {roomTypeOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
                     </SelectItem>
-                    <SelectItem value={ProjectModules.REALISATION}>
-                      <div className="flex items-center gap-2">
-                        <Construction size={16} className="text-primary" />
-                        <span>Realizacja u klienta</span>
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                {fieldState.error && (
-                  <FieldError>{fieldState.error.message}</FieldError>
-                )}
-              </Field>
-            )}
-          />
-        </div>
+                  ))}
+                </SelectContent>
+              </Select>
+              {fieldState.error && (
+                <FieldError>{fieldState.error.message}</FieldError>
+              )}
+            </Field>
+          )}
+        />
 
         <Controller
           name="theme"
@@ -286,4 +287,4 @@ const NewProjectForm = () => {
   );
 };
 
-export default NewProjectForm;
+export default NewVisualizationForm;

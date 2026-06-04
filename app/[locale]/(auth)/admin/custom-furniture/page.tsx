@@ -1,56 +1,49 @@
 "use client";
 
 import AdminHeader from "@/components/AdminHeader";
-import { getFetcher } from "@/constans/apiFetcherFunction";
-import { VisualisationType } from "@/types";
-import {
-  Plus,
-  Maximize2,
-  Palette,
-  MoreVertical,
-  Edit2,
-  Trash2,
-} from "lucide-react";
-import useSWR from "swr";
-import Link from "next/link";
-
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { getFetcher } from "@/constans/apiFetcherFunction";
+import { CustomFurnitureType } from "@/types";
+import {
+  Edit2,
+  Maximize2,
+  MoreVertical,
+  Palette,
+  Plus,
+  Trash2,
+} from "lucide-react";
+import Link from "next/link";
+import useSWR from "swr";
 
-const AdminVisualizationsPage = () => {
-  const { data: projects, isLoading } = useSWR<VisualisationType[]>(
-    "/api/visualizations",
+const AdminCustomFurniturePage = () => {
+  const { data: projects, isLoading } = useSWR<CustomFurnitureType[]>(
+    "/api/custom-furnitures",
     getFetcher,
   );
 
-  console.log(projects, "PROJECTS");
+  console.log(projects);
 
   return (
-    <div className="w-full min-h-screen bg-background pb-20">
+    <div className="w-full">
       <AdminHeader
-        title="Wizualizacje"
+        title="Meble na wymiar"
         buttons={[
           {
-            label: "Nowy projekt",
-            href: "/admin/visualizations/new",
+            label: "Dodaj nowy",
+            href: "/admin/custom-furniture/new",
             icon: Plus,
           },
         ]}
       />
-
       <div className="p-6 md:p-10 container mx-auto">
         {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -71,12 +64,13 @@ const AdminVisualizationsPage = () => {
             <Palette className="w-12 h-12 text-muted-foreground mb-4" />
             <p className="text-xl font-semibold">Brak wizualizacji</p>
             <Button variant="link" asChild>
-              <Link href="/admin/visualizations/new">
+              <Link href="/custom-furniture/new">
                 Dodaj swój pierwszy projekt
               </Link>
             </Button>
           </Card>
         )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects?.map((project) => (
             <Card
@@ -84,7 +78,7 @@ const AdminVisualizationsPage = () => {
               className="group overflow-hidden border-border bg-card hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-xl"
             >
               <div className="relative overflow-hidden">
-                <Link href={`/admin/visualizations/${project.id}`}>
+                <Link href={`/admin/custom-furniture/${project.id}`}>
                   <AspectRatio ratio={16 / 9}>
                     {project.images?.[0] ? (
                       <img
@@ -99,6 +93,7 @@ const AdminVisualizationsPage = () => {
                     )}
                   </AspectRatio>
                 </Link>
+
                 <div className="absolute top-3 left-3 flex gap-2">
                   <Badge
                     variant="outline"
@@ -122,7 +117,7 @@ const AdminVisualizationsPage = () => {
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
                         <Link
-                          href={`/admin/visualizations/${project.id}`}
+                          href={`/admin/custom-furniture/${project.id}`}
                           className="flex items-center"
                         >
                           <Edit2 className="mr-2 h-4 w-4" /> Edytuj
@@ -148,10 +143,7 @@ const AdminVisualizationsPage = () => {
               </CardHeader>
 
               <CardFooter className="p-5 pt-0 flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 border-t border-border/40 mt-2">
-                <span>Visualisation 3D</span>
-                <span className="flex items-center gap-1 group-hover:text-primary transition-colors">
-                  Details <Maximize2 className="w-3 h-3" />
-                </span>
+                <span>Meble na wymiar</span>
               </CardFooter>
             </Card>
           ))}
@@ -161,4 +153,4 @@ const AdminVisualizationsPage = () => {
   );
 };
 
-export default AdminVisualizationsPage;
+export default AdminCustomFurniturePage;

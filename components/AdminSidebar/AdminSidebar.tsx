@@ -39,7 +39,16 @@ const AdminSidebar = () => {
 
   const navigationPaths = [
     { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
-    { title: "Portfolio", url: "/admin/portfolio", icon: TableProperties },
+    {
+      title: "Wizualizacje",
+      url: "/admin/visualizations",
+      icon: TableProperties,
+    },
+    {
+      title: "Meble na wymiar",
+      url: "/admin/custom-furniture",
+      icon: TableProperties,
+    },
   ];
 
   const isSelected = (url: string) => pathname === url;

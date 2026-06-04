@@ -20,18 +20,22 @@ const serviceAccount = {
 
 let firestore: Firestore;
 let auth: Auth;
+let storage: any;
 const currentApps = getApps();
 
 if (!currentApps.length) {
   const app = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount as ServiceAccount),
+    storageBucket: "lilemar-website.firebasestorage.app",
   });
   firestore = getFirestore(app);
   auth = getAuth(app);
+  storage = admin.storage();
 } else {
   const app = currentApps[0];
   firestore = getFirestore(app);
   auth = getAuth(app);
+  storage = admin.storage();
 }
 
-export { firestore, auth };
+export { firestore, auth, storage };

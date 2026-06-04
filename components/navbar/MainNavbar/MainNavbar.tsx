@@ -17,19 +17,19 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react"; // Import ikony hamburgera
+import { Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetTitle,
-} from "@/components/ui/sheet"; // Komponent Sheet z Shadcn
+} from "@/components/ui/sheet";
 
 const MainNavbar = () => {
   const t = useTranslations("navigation");
   const { resolvedTheme } = useTheme();
   const pathname = usePathname();
-  const normalizedPath = pathname.replace(/^\/(en|pl)(\/|$)/, "/"); // Poprawiony regex dla wielu języków
+  const normalizedPath = pathname.replace(/^\/(en|pl)(\/|$)/, "/");
 
   const [mounted, setMounted] = useState(false);
 
@@ -41,8 +41,8 @@ const MainNavbar = () => {
 
   const navigationItems = [
     { label: t("buttons.home"), href: "/" },
-    { label: t("buttons.custom_furniture"), href: "/custom-furniture" },
-    { label: t("buttons.visualisations"), href: "/visualisations" },
+    { label: t("buttons.custom_furniture"), href: "/custom-furnitures" },
+    { label: t("buttons.visualisations"), href: "/visualizations" },
     { label: t("buttons.about_us"), href: "/about-us" },
     { label: t("buttons.contact"), href: "/contact" },
   ];

@@ -1,17 +1,17 @@
 import AdminHeader from "@/components/AdminHeader";
-import NewProjectForm from "@/components/NewProjectForm";
+import NewVisualizationForm from "@/components/NewVisualizationForm";
 
-const AdminNewProjectPage = () => {
+const AdminNewVisualizationPage = () => {
   return (
     <div className="w-full">
       <AdminHeader
-        title="New Project"
+        title="Nowa wizualizacja"
         showBackButton
-        backHref="/admin/portfolio"
+        backHref="/admin/visualizations"
       />
-      <NewProjectForm />
+      <NewVisualizationForm />
     </div>
   );
 };
 
-export default AdminNewProjectPage;
+export default AdminNewVisualizationPage;
