@@ -5,10 +5,12 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Camera, Hammer } from "lucide-react"; // Zmieniono na Hammer dla rzemiosła
+import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HomePageAbout = () => {
+  const t = useTranslations("home");
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useGSAP(
@@ -58,18 +60,15 @@ const HomePageAbout = () => {
         {/* NAGŁÓWEK - Czytelny i nowoczesny */}
         <div className="mb-24 text-center md:text-left">
           <span className="inline-block mb-4 px-4 py-1 border border-primary/30 text-primary text-[10px] font-black tracking-[0.5em] uppercase rounded-full">
-            Model współpracy
+            {t("collaboration")}
           </span>
           <h2 className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-8">
-            Kompleksowe <br />
-            <span className="text-primary italic">podejście.</span>
+            {t("approach")} <br />
+            <span className="text-primary italic">{t("approachAccent")}</span>
           </h2>
           <div className="w-24 h-2 bg-primary mb-8 hidden md:block" />
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl font-light leading-relaxed">
-            Łączymy świat cyfrowego designu z fizycznym rzemiosłem. Nasza
-            działalność opiera się na dwóch uzupełniających się filarach, które
-            gwarantują spójność od pierwszego szkicu po montaż ostatniego
-            uchwytu.
+            {t("about")}
           </p>
         </div>
 
@@ -82,15 +81,11 @@ const HomePageAbout = () => {
                 <Camera className="w-8 h-8" />
               </div>
               <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-6">
-                Projektowanie <br /> &{" "}
-                <span className="text-primary">Wizualizacje 3D</span>
+                {t("designTitle")} <br /> &{" "}
+                <span className="text-primary">{t("designAccent")}</span>
               </h3>
               <p className="text-muted-foreground text-lg font-light leading-relaxed">
-                Przekształcamy Twoje pomysły w fotorealistyczne obrazy. Dzięki
-                zaawansowanej technologii 3D, zobaczysz swoje przyszłe wnętrze z
-                uwzględnieniem każdego detalu, tekstury materiału i gry światła.
-                To etap, na którym eliminujemy niepewność i kreujemy idealną
-                wizję.
+                {t("designDescription")}
               </p>
             </div>
           </div>
@@ -102,15 +97,11 @@ const HomePageAbout = () => {
                 <Hammer className="w-8 h-8" />
               </div>
               <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-6">
-                Realizacja <br /> &{" "}
-                <span className="text-primary">Meble na wymiar</span>
+                {t("furnitureTitle")} <br /> &{" "}
+                <span className="text-primary">{t("furnitureAccent")}</span>
               </h3>
               <p className="text-secondary-foreground/70 text-lg font-light leading-relaxed">
-                Wizja staje się rzeczywistością. Specjalizujemy się w
-                dostarczaniu wysokiej jakości mebli na indywidualne zamówienie.
-                Dbamy o to, aby rzemieślnicza precyzja wykonania w pełni
-                oddawała to, co wspólnie wypracowaliśmy na etapie projektu 3D.
-                Solidność bez kompromisów.
+                {t("furnitureDescription")}
               </p>
             </div>
           </div>
@@ -119,10 +110,10 @@ const HomePageAbout = () => {
         {/* PASEK STATYSTYK - Informacje ogólne */}
         <div className="stats-container mt-20 grid grid-cols-2 lg:grid-cols-4 gap-12 py-12 px-6">
           {[
-            { label: "Doświadczenie", val: "12 lat" },
-            { label: "Projekty wnętrz", val: "300+" },
-            { label: "Wykonane zabudowy", val: "150+" },
-            { label: "Dbałość o detal", val: "100%" },
+            { label: t("experience"), val: "12" },
+            { label: t("interiorProjects"), val: "300+" },
+            { label: t("builtIns"), val: "150+" },
+            { label: t("attentionToDetail"), val: "100%" },
           ].map((stat, i) => (
             <div
               key={i}

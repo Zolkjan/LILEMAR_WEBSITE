@@ -21,6 +21,7 @@ import {
   Zap,
   Quote,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -28,6 +29,7 @@ if (typeof window !== "undefined") {
 
 const AboutUsPage = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("about");
 
   useGSAP(
     () => {
@@ -42,8 +44,8 @@ const AboutUsPage = () => {
       });
 
       // Licznik w statystykach
-      const stats = gsap.utils.toArray(".stat-number");
-      stats.forEach((stat: any) => {
+      const stats = gsap.utils.toArray<HTMLElement>(".stat-number");
+      stats.forEach((stat) => {
         const targetValue = parseInt(stat.getAttribute("data-value") || "0");
         gsap.to(stat, {
           innerText: targetValue,
@@ -57,8 +59,8 @@ const AboutUsPage = () => {
       });
 
       // Pojawianie się sekcji (Scroll)
-      const sections = gsap.utils.toArray(".about-section");
-      sections.forEach((section: any) => {
+      const sections = gsap.utils.toArray<HTMLElement>(".about-section");
+      sections.forEach((section) => {
         gsap.from(section, {
           opacity: 0,
           y: 40,
@@ -83,24 +85,18 @@ const AboutUsPage = () => {
       {/* 1. HERO SECTION */}
       <section className="pt-44 pb-24 px-6 md:px-10 max-w-7xl mx-auto">
         <div className="reveal-about space-y-4 mb-12">
-          <Badge
-            variant="outline"
-            className="border-primary/30 text-primary px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.4em]"
-          >
-            Lilema Studio — Od 2018
-          </Badge>
           <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter leading-[0.8] uppercase">
-            Definiujemy <br />
-            <span className="text-primary italic font-serif">Przestrzeń</span>
+            {t("title")} <br />
+            <span className="text-primary italic font-serif">
+              {t("titleAccent")}
+            </span>
           </h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
           <div className="lg:col-span-7 reveal-about">
             <p className="text-xl md:text-2xl font-light leading-relaxed text-muted-foreground uppercase tracking-tight max-w-2xl">
-              Nie interesują nas powtarzalne schematy. W Lilema Studio łączymy
-              rzemiosło z technologią 3D, tworząc wnętrza, które są
-              przedłużeniem osobowości ich właścicieli.
+              {t("intro")}
             </p>
           </div>
           <div className="lg:col-span-5 reveal-about flex lg:justify-end">
@@ -113,8 +109,7 @@ const AboutUsPage = () => {
           </div>
         </div>
       </section>
-
-      {/* 2. STATS (Shadcn Card) */}
+      {/*
       <section className="about-section px-6 mb-32">
         <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           {[
@@ -141,23 +136,20 @@ const AboutUsPage = () => {
             </Card>
           ))}
         </div>
-      </section>
+      </section> */}
 
-      {/* 3. FILARY (Shadcn Grid) */}
       <section className="about-section px-6 max-w-7xl mx-auto mb-32">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-20">
           <div className="max-w-md">
             <h2 className="text-5xl font-black tracking-tighter uppercase leading-none mb-6">
-              Nasze{" "}
+              {t("dna").split(" ")[0]}{" "}
               <span className="text-primary italic font-serif text-6xl">
-                DNA
+                {t("dna").split(" ").slice(1).join(" ")}
               </span>
             </h2>
             <Separator className="w-20 bg-primary h-1 mb-8" />
             <p className="text-muted-foreground font-light leading-relaxed">
-              Każdy projekt traktujemy jak unikalne dzieło sztuki. Nasze
-              podejście opiera się na trzech filarach: estetyce, użyteczności i
-              emocjach, jakie wywołuje przestrzeń.
+              {t("description")}
             </p>
           </div>
 
@@ -165,23 +157,23 @@ const AboutUsPage = () => {
             {[
               {
                 icon: ShieldCheck,
-                title: "Jakość",
-                desc: "Tylko materiały i rozwiązania, pod którymi podpisujemy się obiema rękami.",
+                title: t("quality"),
+                desc: t("qualityDescription"),
               },
               {
                 icon: Zap,
-                title: "Energia",
-                desc: "Wnosimy dynamikę i świeże spojrzenie do każdego metra kwadratowego.",
+                title: t("energy"),
+                desc: t("energyDescription"),
               },
               {
                 icon: Target,
-                title: "Wizja",
-                desc: "Widzimy potencjał tam, gdzie inni widzą tylko puste ściany.",
+                title: t("vision"),
+                desc: t("visionDescription"),
               },
               {
                 icon: Quote,
-                title: "Dialog",
-                desc: "Twój głos jest fundamentem, na którym budujemy naszą koncepcję.",
+                title: t("dialog"),
+                desc: t("dialogDescription"),
               },
             ].map((filar, i) => (
               <div
@@ -209,22 +201,22 @@ const AboutUsPage = () => {
           <div className="relative z-10 text-center lg:text-left flex flex-col lg:flex-row items-center justify-between gap-10">
             <div className="max-w-xl">
               <h3 className="text-background text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none mb-6">
-                Chcesz zmienić swoją <br />{" "}
+                {t("ctaTitle")} <br />{" "}
                 <span className="text-primary italic font-serif text-5xl md:text-7xl">
-                  Codzienność?
+                  {t("ctaAccent")}
                 </span>
               </h3>
               <p className="text-background/60 text-sm uppercase font-bold tracking-[0.2em]">
-                Zacznijmy od rozmowy o Twoich marzeniach.
+                {t("ctaDescription")}
               </p>
             </div>
             <Button
               size="lg"
-              className="bg-primary text-primary-foreground hover:bg-white hover:text-foreground rounded-full h-20 px-12 text-[10px] font-black uppercase tracking-[0.4em] transition-all group"
+              className="bg-primary text-primary-foreground hover:bg-white hover:text-foreground rounded-full h-20 px-12 text-[11px] font-black uppercase tracking-[0.4em] transition-all group"
               asChild
             >
               <Link href="/contact">
-                Zarezerwuj Termin
+                {t("ctaButton")}
                 <ArrowRight className="ml-4 w-5 h-5 group-hover:translate-x-2 transition-transform" />
               </Link>
             </Button>

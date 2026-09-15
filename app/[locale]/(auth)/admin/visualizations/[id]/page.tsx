@@ -19,10 +19,12 @@ import useSWR from "swr";
 import { getFetcher } from "@/constans/apiFetcherFunction";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const VisualisationPreviewPage = () => {
   const params = useParams();
   const projectId = params.id;
+  const t = useTranslations("details");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const { data: projectData, isLoading } = useSWR(
@@ -42,7 +44,7 @@ const VisualisationPreviewPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-muted-foreground font-medium uppercase tracking-widest">
-          Projekt nie został odnaleziony.
+          {t("notFound")}
         </p>
       </div>
     );
@@ -72,7 +74,7 @@ const VisualisationPreviewPage = () => {
               </Link>
             </Button>
             <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase hidden sm:block">
-              Panel / {projectId}
+              {t("adminMode")} / {projectId}
             </span>
           </div>
 
@@ -81,14 +83,14 @@ const VisualisationPreviewPage = () => {
               variant="outline"
               className="border-border hover:bg-muted font-bold text-xs uppercase tracking-widest px-6 h-10 transition-all"
             >
-              <Edit className="w-4 h-4 mr-2" /> Edytuj
+              <Edit className="w-4 h-4 mr-2" /> {t("edit")}
             </Button>
 
             <Button
               variant="destructive"
               className="bg-destructive text-destructive-foreground font-bold text-xs uppercase tracking-widest px-6 h-10 shadow-sm transition-all"
             >
-              <PowerOff className="w-4 h-4 mr-2" /> Dezaktywuj
+              <PowerOff className="w-4 h-4 mr-2" /> {t("deactivate")}
             </Button>
           </div>
         </div>
@@ -163,7 +165,7 @@ const VisualisationPreviewPage = () => {
                 <div className="flex items-center gap-2 text-muted-foreground mb-3">
                   <Info size={14} className="text-primary" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
-                    Opis techniczny
+                    {t("technicalDescription")}
                   </span>
                 </div>
                 <p className="text-foreground/80 leading-relaxed font-medium">
@@ -174,7 +176,7 @@ const VisualisationPreviewPage = () => {
 
             <div className="space-y-4">
               <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                Wyposażenie i systemy
+                {t("equipment")}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {displayData.features.map((feature: string) => (
@@ -194,8 +196,8 @@ const VisualisationPreviewPage = () => {
             {/* Footer info box */}
             <div className="p-4 rounded-lg bg-muted/30 border border-border mt-auto">
               <div className="flex justify-between items-center text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-                <span>Tryb administracyjny</span>
-                <span className="text-primary">Status: Aktywny</span>
+                <span>{t("adminMode")}</span>
+                <span className="text-primary">{t("active")}</span>
               </div>
             </div>
           </div>

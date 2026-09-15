@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, Moon, Sun, ArrowRight, Share2 } from "lucide-react";
 import { getFetcher } from "@/constans/apiFetcherFunction";
 import { VisualisationType } from "@/types";
+import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -22,6 +23,7 @@ const CustomFurniturePage = () => {
   const params = useParams();
   const projectId = params.id as string;
   const containerRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("details");
 
   const { data: projectData, isLoading } = useSWR<VisualisationType>(
     projectId ? `/api/custom-furnitures/${projectId}` : null,
@@ -81,7 +83,7 @@ const CustomFurniturePage = () => {
         >
           <Link href="/custom-furnitures">
             <ChevronLeft className="mr-2 w-5 h-5 text-primary group-hover:-translate-x-1 transition-transform" />
-            Powrót do Portfolio
+            {t("backPortfolio")}
           </Link>
         </Button>
         <Button
@@ -109,7 +111,7 @@ const CustomFurniturePage = () => {
                 ) : (
                   <Sun size={12} />
                 )}
-                {projectData.theme} Mode
+                {projectData.theme} {t("mode")}
               </Badge>
             </div>
             <div className="space-y-6">
@@ -125,7 +127,7 @@ const CustomFurniturePage = () => {
 
             <div className="reveal-text pt-6">
               <Button className="bg-foreground text-background hover:bg-primary hover:text-primary-foreground rounded-full h-16 px-12 text-[10px] font-black uppercase tracking-[0.3em] transition-all group">
-                Rozpocznij projekt
+                {t("startProject")}
                 <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" />
               </Button>
             </div>
@@ -151,11 +153,11 @@ const CustomFurniturePage = () => {
       <footer className="bg-card border-t border-border p-20 mt-20 relative overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col items-center space-y-10 relative z-10">
           <div className="text-foreground font-black text-5xl md:text-7xl tracking-tighter uppercase italic font-serif">
-            Lilema <span className="text-primary">Studio</span>
+            Lilemar
           </div>
           <div className="h-px w-20 bg-primary/30" />
           <p className="text-[10px] uppercase tracking-[0.6em] text-muted-foreground font-bold text-center">
-            Tworzymy przestrzenie, które inspirują. © 2026
+            {t("footer")}
           </p>
         </div>
 

@@ -5,21 +5,25 @@ import useSWR from "swr";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { getFetcher } from "@/constans/apiFetcherFunction";
-import { VisualisationType } from "@/types";
+import { CustomFurnitureType } from "@/types";
 import { ProjectThemes } from "@/enums";
 import { roomTypeOptions } from "@/enums/selectOptions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { MessageCircle, X, Send, ArrowUpRight } from "lucide-react";
+import { MessageCircle, X, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const PortfolioPage = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { data: projects, isLoading } = useSWR<VisualisationType[]>(
-    "/api/custom-furnitures",
-    getFetcher,
-  );
+  const t = useTranslations("portfolio");
+  const common = useTranslations("common");
+  const {
+    data: projects,
+    error: projectsError,
+    isLoading,
+  } = useSWR<CustomFurnitureType[]>("/api/custom-furnitures", getFetcher);
 
   const [activeRoom, setActiveRoom] = useState<string>("all");
   const [activeTheme, setActiveTheme] = useState<string>("all");
@@ -27,7 +31,7 @@ const PortfolioPage = () => {
 
   const filteredProjects = useMemo(() => {
     return (
-      projects?.filter((project) => {
+      (projects ?? []).filter((project) => {
         const matchRoom =
           activeRoom === "all" || project.roomType === activeRoom;
         const matchTheme =
@@ -64,7 +68,7 @@ const PortfolioPage = () => {
         );
       }
     },
-    { dependencies: [filteredProjects], scope: containerRef },
+    { dependencies: [filteredProjects, isLoading], scope: containerRef },
   );
 
   const toggleContact = () => {
@@ -102,7 +106,7 @@ const PortfolioPage = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
           <div className="reveal">
             <span className="text-primary font-black tracking-[0.5em] uppercase text-[10px] block mb-4">
-              01 — Galeria Projektów
+              {t("gallery")}
             </span>
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.8]">
               PORT<span className="text-primary italic font-serif">FOLIO</span>
@@ -110,9 +114,9 @@ const PortfolioPage = () => {
           </div>
           <div className="reveal flex bg-secondary/50 p-1 rounded-xl border border-border backdrop-blur-sm">
             {[
-              { id: "all", label: "Wszystkie" },
-              { id: ProjectThemes.LIGHT, label: "Jasne" },
-              { id: ProjectThemes.DARK, label: "Ciemne" },
+              { id: "all", label: t("all") },
+              { id: ProjectThemes.LIGHT, label: t("light") },
+              { id: ProjectThemes.DARK, label: t("dark") },
             ].map((t) => (
               <button
                 key={t.id}
@@ -128,28 +132,48 @@ const PortfolioPage = () => {
             ))}
           </div>
         </div>
-        <div className="reveal flex flex-wrap gap-2 border-t border-border pt-8">
-          <Button
-            variant={activeRoom === "all" ? "default" : "ghost"}
-            onClick={() => setActiveRoom("all")}
-            className="rounded-full px-6 uppercase text-[10px] font-bold tracking-widest"
-          >
-            Wszystkie Realizacje
-          </Button>
-          {roomTypeOptions.map((opt) => (
+        <div className="reveal border-t border-border pt-8">
+          <p className="mb-4 text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+            {t("filter")}
+          </p>
+          <div className="flex flex-wrap gap-2">
             <Button
-              key={opt.value}
-              variant={activeRoom === opt.value ? "default" : "ghost"}
-              onClick={() => setActiveRoom(opt.value)}
+              variant={activeRoom === "all" ? "default" : "ghost"}
+              onClick={() => setActiveRoom("all")}
               className="rounded-full px-6 uppercase text-[10px] font-bold tracking-widest"
             >
-              {opt.label}
+              {t("allRealizations")}
             </Button>
-          ))}
+            {roomTypeOptions.map((opt) => (
+              <Button
+                key={opt.value}
+                variant={activeRoom === opt.value ? "default" : "ghost"}
+                onClick={() => setActiveRoom(opt.value)}
+                className="rounded-full px-6 uppercase text-[10px] font-bold tracking-widest"
+              >
+                {common(`roomTypes.${opt.value}`)}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+        {isLoading && (
+          <p className="col-span-full py-16 text-center text-sm font-bold uppercase tracking-widest text-muted-foreground">
+            {t("loadingFurniture")}
+          </p>
+        )}
+        {projectsError && (
+          <p className="col-span-full py-16 text-center text-sm font-bold uppercase tracking-widest text-destructive">
+            {t("loadFurnitureError")}
+          </p>
+        )}
+        {!isLoading && !projectsError && filteredProjects.length === 0 && (
+          <p className="col-span-full py-16 text-center text-sm font-bold uppercase tracking-widest text-muted-foreground">
+            {t("empty")}
+          </p>
+        )}
         {filteredProjects.map((project) => (
           <div key={project.id} className="portfolio-card group">
             <Link href={`/custom-furnitures/${project.id}`}>
@@ -159,6 +183,7 @@ const PortfolioPage = () => {
                   <img
                     src={project.images?.[0]}
                     alt={project.title}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
                   <div className="absolute top-6 left-6 z-20">
@@ -192,10 +217,10 @@ const PortfolioPage = () => {
         >
           <div className="bg-primary p-8 text-primary-foreground">
             <h4 className="font-black text-2xl tracking-tighter uppercase italic leading-none mb-2">
-              Zapytaj o projekt
+              {t("ask")}
             </h4>
             <p className="text-[10px] uppercase font-bold tracking-widest opacity-80">
-              Bezpłatna wycena w 24h
+              {t("estimate")}
             </p>
           </div>
           <div className="p-8 space-y-3">
@@ -203,14 +228,14 @@ const PortfolioPage = () => {
               className="w-full h-14 rounded-2xl font-black uppercase text-[10px] tracking-widest"
               asChild
             >
-              <a href="mailto:hello@studio.pl">Wyślij wiadomość</a>
+              <a href="mailto:biuro@lilemar.pl">{t("send")}</a>
             </Button>
             <Button
               variant="outline"
               className="w-full h-14 rounded-2xl font-black uppercase text-[10px] tracking-widest"
               asChild
             >
-              <a href="tel:+48000000000">Zadzwoń do nas</a>
+              <a href="tel:+48000000000">{t("call")}</a>
             </Button>
           </div>
         </div>

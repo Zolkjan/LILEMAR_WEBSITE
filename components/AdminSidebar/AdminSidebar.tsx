@@ -27,9 +27,11 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "../ui/tooltip";
+import { useTranslations } from "next-intl";
 
 const AdminSidebar = () => {
   const auth = useAuth();
+  const t = useTranslations("admin");
   const { resolvedTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
@@ -38,14 +40,15 @@ const AdminSidebar = () => {
   const [mounted, setMounted] = useState(false);
 
   const navigationPaths = [
-    { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+    { title: t("heading"), url: "/admin", icon: LayoutDashboard },
+    { title: t("recent"), url: "/admin/contact", icon: Users },
     {
-      title: "Wizualizacje",
+      title: t("stats.visualizations"),
       url: "/admin/visualizations",
       icon: TableProperties,
     },
     {
-      title: "Meble na wymiar",
+      title: t("stats.projects"),
       url: "/admin/custom-furniture",
       icon: TableProperties,
     },
@@ -54,7 +57,8 @@ const AdminSidebar = () => {
   const isSelected = (url: string) => pathname === url;
 
   useEffect(() => {
-    setMounted(true);
+    const timer = window.setTimeout(() => setMounted(true), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (!mounted) return null;
@@ -104,7 +108,7 @@ const AdminSidebar = () => {
         <SidebarGroup>
           {!isCollapsed && (
             <SidebarGroupLabel className="px-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-              Zarządzanie
+              {t("management")}
             </SidebarGroupLabel>
           )}
           <SidebarMenu className="gap-1 mt-2">
@@ -176,7 +180,9 @@ const AdminSidebar = () => {
                   !isCollapsed && "mr-3",
                 )}
               />
-              {!isCollapsed && <span className="font-medium">Wyloguj się</span>}
+              {!isCollapsed && (
+                <span className="font-medium">{t("logout")}</span>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

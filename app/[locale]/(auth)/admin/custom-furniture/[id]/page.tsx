@@ -18,10 +18,12 @@ import useSWR from "swr";
 import { getFetcher } from "@/constans/apiFetcherFunction";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const CustomFurniturePreviewPage = () => {
   const params = useParams();
   const projectId = params.id;
+  const t = useTranslations("details");
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -43,7 +45,7 @@ const CustomFurniturePreviewPage = () => {
   if (!projectData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="font-bold uppercase">Nie znaleziono projektu.</p>
+        <p className="font-bold uppercase">{t("notFound")}</p>
       </div>
     );
   }
@@ -66,7 +68,7 @@ const CustomFurniturePreviewPage = () => {
           className="hover:bg-muted font-bold uppercase text-xs tracking-widest"
         >
           <Link href="/admin/custom-furniture">
-            <ChevronLeft className="w-4 h-4 mr-2" /> Wróć do listy
+            <ChevronLeft className="w-4 h-4 mr-2" /> {t("backList")}
           </Link>
         </Button>
         <div className="flex gap-3">
@@ -78,7 +80,7 @@ const CustomFurniturePreviewPage = () => {
             <Share2 className="w-4 h-4" />
           </Button>
           <Button className="bg-primary text-primary-foreground font-black uppercase text-xs px-6 shadow-[4px_4px_0px_0px_rgba(46,46,46,1)]">
-            Publikuj projekt
+            {t("publish")}
           </Button>
         </div>
       </div>
@@ -114,7 +116,7 @@ const CustomFurniturePreviewPage = () => {
               >
                 <img
                   src={imgUrl}
-                  alt={`Thumbnail ${index}`}
+                  alt={`${t("thumbnail")} ${index}`}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -134,7 +136,7 @@ const CustomFurniturePreviewPage = () => {
                 ) : (
                   <Sun size={10} />
                 )}
-                {displayData.theme} THEME
+                {displayData.theme} {t("mode")}
               </Badge>
             </div>
 
@@ -145,7 +147,8 @@ const CustomFurniturePreviewPage = () => {
 
           <div className="p-6 rounded-xl border-2 border-border bg-card space-y-4">
             <h3 className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
-              <Info size={14} className="text-primary" /> Opis techniczny
+              <Info size={14} className="text-primary" />{" "}
+              {t("technicalDescription")}
             </h3>
             <p className="text-foreground leading-relaxed font-medium">
               {displayData.description}
@@ -154,7 +157,7 @@ const CustomFurniturePreviewPage = () => {
 
           <div className="space-y-4">
             <h3 className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              Wyposażenie i systemy
+              {t("equipment")}
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {displayData.features.map((feature: string) => (

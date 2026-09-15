@@ -2,13 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Instagram, Facebook, Linkedin, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import SocialMediaIcons from "../SocialMediaIcons";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const BottomNav = () => {
   const { resolvedTheme } = useTheme();
+  const t = useTranslations("home");
+  const navigation = useTranslations("navigation");
+  const common = useTranslations("common");
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -16,12 +20,13 @@ const BottomNav = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = window.setTimeout(() => setMounted(true), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (!mounted) return null;
 
-  const Logo = () => (
+  const logo = (
     <Image
       src={
         resolvedTheme === "dark"
@@ -40,48 +45,45 @@ const BottomNav = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
           <div className="md:col-span-5 flex flex-col gap-6">
-            <Link href="/">
-              <Logo />
-            </Link>
+            <Link href="/">{logo}</Link>
             <p className="text-muted-foreground max-w-sm text-sm leading-relaxed">
-              Tworzymy unikalne projekty architektoniczne i wnętrza, które łączą
-              estetykę z najwyższą funkcjonalnością. Każdy detal ma znaczenie.
+              {common("footerDescription")}
             </p>
             <SocialMediaIcons />
           </div>
 
           <div className="md:col-span-3">
             <h4 className="text-primary font-bold uppercase text-xs tracking-widest mb-6">
-              Nawigacja
+              {common("navigation")}
             </h4>
             <ul className="flex flex-col gap-4 text-sm">
               <li>
                 <Link href="/" className="hover:text-primary transition-colors">
-                  Strona Główna
+                  {navigation("buttons.home")}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/about"
+                  href="/about-us"
                   className="hover:text-primary transition-colors"
                 >
-                  O nas
+                  {navigation("buttons.about_us")}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/portfolio"
+                  href="/visualizations"
                   className="hover:text-primary transition-colors"
                 >
-                  Projekty
+                  {navigation("buttons.visualisations")}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/kontakt"
+                  href="/contact"
                   className="hover:text-primary transition-colors"
                 >
-                  Kontakt
+                  {navigation("buttons.contact")}
                 </Link>
               </li>
             </ul>
@@ -89,18 +91,17 @@ const BottomNav = () => {
 
           <div className="md:col-span-4">
             <h4 className="text-primary font-bold uppercase text-xs tracking-widest mb-6">
-              Kontakt
+              {navigation("buttons.contact")}
             </h4>
             <div className="flex flex-col gap-4 text-sm">
               <p className="text-muted-foreground leading-relaxed">
-                ul. Projektowa 12, <br />
-                00-001 Warszawa
+                {common("footerAddress")}
               </p>
               <a
-                href="mailto:biuro@studiovision.pl"
+                href="mailto:biuro@lilemar.pl"
                 className="text-lg font-bold hover:text-primary transition-colors"
               >
-                biuro@studiovision.pl
+                biuro@lilemar.pl
               </a>
               <a
                 href="tel:+48000000000"
@@ -114,15 +115,14 @@ const BottomNav = () => {
 
         <div className="pt-8 border-t border-white/5 flex flex-col md:row items-center justify-between gap-6 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/50 font-medium">
           <p>
-            © {new Date().getFullYear()} Studio Vision. Wszystkie prawa
-            zastrzeżone.
+            © {new Date().getFullYear()} Lilemar. {common("copyright")}
           </p>
 
           <button
             onClick={scrollToTop}
             className="group flex items-center gap-2 hover:text-primary transition-colors cursor-pointer"
           >
-            Wróć do góry
+            {common("backToTop")}
             <div className="p-2 rounded-full bg-white/5 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
               <ArrowUp size={14} />
             </div>

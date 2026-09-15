@@ -23,8 +23,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
+import { useTranslations } from "next-intl";
 
 const AdminCustomFurniturePage = () => {
+  const t = useTranslations("details");
+  const navigation = useTranslations("navigation");
   const { data: projects, isLoading } = useSWR<CustomFurnitureType[]>(
     "/api/custom-furnitures",
     getFetcher,
@@ -35,10 +38,10 @@ const AdminCustomFurniturePage = () => {
   return (
     <div className="w-full">
       <AdminHeader
-        title="Meble na wymiar"
+        title={navigation("buttons.custom_furniture")}
         buttons={[
           {
-            label: "Dodaj nowy",
+            label: t("addNew"),
             href: "/admin/custom-furniture/new",
             icon: Plus,
           },
@@ -62,11 +65,9 @@ const AdminCustomFurniturePage = () => {
         {!isLoading && projects?.length === 0 && (
           <Card className="border-dashed py-20 flex flex-col items-center justify-center bg-muted/20">
             <Palette className="w-12 h-12 text-muted-foreground mb-4" />
-            <p className="text-xl font-semibold">Brak wizualizacji</p>
+            <p className="text-xl font-semibold">{t("emptyFurniture")}</p>
             <Button variant="link" asChild>
-              <Link href="/custom-furniture/new">
-                Dodaj swój pierwszy projekt
-              </Link>
+              <Link href="/custom-furniture/new">{t("addFirst")}</Link>
             </Button>
           </Card>
         )}
@@ -99,7 +100,7 @@ const AdminCustomFurniturePage = () => {
                     variant="outline"
                     className="bg-background/80 backdrop-blur-md uppercase text-[9px] tracking-widest"
                   >
-                    {project.roomType || "Projekt"}
+                    {project.roomType || t("details")}
                   </Badge>
                 </div>
 
@@ -120,11 +121,11 @@ const AdminCustomFurniturePage = () => {
                           href={`/admin/custom-furniture/${project.id}`}
                           className="flex items-center"
                         >
-                          <Edit2 className="mr-2 h-4 w-4" /> Edytuj
+                          <Edit2 className="mr-2 h-4 w-4" /> {t("edit")}
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="text-destructive focus:text-destructive">
-                        <Trash2 className="mr-2 h-4 w-4" /> Usuń
+                        <Trash2 className="mr-2 h-4 w-4" /> {t("delete")}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -138,12 +139,12 @@ const AdminCustomFurniturePage = () => {
                   </h3>
                 </div>
                 <p className="text-sm text-muted-foreground line-clamp-2 min-h-10">
-                  {project.description || "Brak opisu projektu."}
+                  {project.description || t("descriptionMissing")}
                 </p>
               </CardHeader>
 
               <CardFooter className="p-5 pt-0 flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 border-t border-border/40 mt-2">
-                <span>Meble na wymiar</span>
+                <span>{navigation("buttons.custom_furniture")}</span>
               </CardFooter>
             </Card>
           ))}

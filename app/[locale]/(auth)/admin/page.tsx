@@ -20,27 +20,27 @@ const AdminPage = () => {
   // Dane statyczne dopasowane do Twojej palety
   const stats = [
     {
-      title: "Wszystkie projekty",
+      title: t("stats.projects"),
       value: "24",
-      description: "+3 w tym miesiącu",
+      description: t("stats.projectsDescription"),
       icon: Hammer,
     },
     {
-      title: "Wizualizacje 3D",
+      title: t("stats.visualizations"),
       value: "12",
-      description: "85% ukończonych",
+      description: t("stats.visualizationsDescription"),
       icon: Images,
     },
     {
-      title: "Wyświetlenia",
+      title: t("stats.views"),
       value: "1,284",
-      description: "+12.5% vs last week",
+      description: t("stats.viewsDescription"),
       icon: TrendingUp,
     },
     {
-      title: "Status systemu",
+      title: t("stats.system"),
       value: "Online",
-      description: "Wszystkie moduły aktywne",
+      description: t("stats.systemDescription"),
       icon: Clock,
     },
   ];
@@ -53,7 +53,7 @@ const AdminPage = () => {
             {t("heading")}
           </h1>
           <p className="text-muted-foreground mt-2 font-medium">
-            Zarządzaj swoją pracownią i projektami mebli.
+            {t("description")}
           </p>
         </div>
       </div>
@@ -86,7 +86,7 @@ const AdminPage = () => {
           <CardHeader className="border-b border-border/50">
             <CardTitle className="text-lg font-black uppercase flex items-center gap-3">
               <LayoutDashboard className="w-5 h-5 text-primary" />
-              Ostatnie realizacje
+              {t("recent")}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
@@ -105,7 +105,7 @@ const AdminPage = () => {
                         Szafa przesuwna dębowa v{item}
                       </p>
                       <p className="text-xs text-muted-foreground font-medium">
-                        Ostatnia edycja: 2h temu
+                        {t("lastEdited")}
                       </p>
                     </div>
                   </div>

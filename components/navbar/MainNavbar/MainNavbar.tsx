@@ -34,7 +34,8 @@ const MainNavbar = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = window.setTimeout(() => setMounted(true), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (!mounted) return null;
@@ -47,7 +48,7 @@ const MainNavbar = () => {
     { label: t("buttons.contact"), href: "/contact" },
   ];
 
-  const Logo = () => (
+  const logo = (
     <Image
       src={
         resolvedTheme === "dark"
@@ -65,9 +66,7 @@ const MainNavbar = () => {
     <nav className="fixed top-0 z-50 flex justify-center w-full xl:px-4">
       <div className="w-full max-w-7xl h-16 xl:h-20 rounded-b-full border bg-background/80 backdrop-blur-md px-12 xl:px-16 flex items-center justify-between shadow-sm">
         <div className="shrink-0">
-          <Link href="/">
-            <Logo />
-          </Link>
+          <Link href="/">{logo}</Link>
         </div>
         <div className="hidden xl:block">
           <NavigationMenu>
@@ -110,7 +109,9 @@ const MainNavbar = () => {
                 className="flex flex-col justify-between h-full p-6"
               >
                 <div className="flex flex-col gap-6 mt-10">
-                  <SheetTitle className="text-left text-xl">Menu</SheetTitle>
+                  <SheetTitle className="text-left text-xl">
+                    {t("menu")}
+                  </SheetTitle>
                   {navigationItems.map((item) => (
                     <Link
                       key={item.label}
@@ -128,7 +129,9 @@ const MainNavbar = () => {
                 </div>
                 <div className="flex flex-col gap-4 border-t pt-6 pb-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Język</span>
+                    <span className="text-sm text-muted-foreground">
+                      {t("language")}
+                    </span>
                     <LanguageSwitcher />
                   </div>
                   <div className="flex justify-center py-2">

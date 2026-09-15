@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/auth";
 import ThemeProvider from "@/components/ThemeProvider";
 import { ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +40,10 @@ const RootLayout = ({
             enableSystem
             disableTransitionOnChange
           >
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              {children}
+              <Toaster position="top-right" richColors closeButton />
+            </AuthProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

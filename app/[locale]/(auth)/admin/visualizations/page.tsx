@@ -29,8 +29,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 const AdminVisualizationsPage = () => {
+  const t = useTranslations("details");
+  const navigation = useTranslations("navigation");
   const { data: projects, isLoading } = useSWR<VisualisationType[]>(
     "/api/visualizations",
     getFetcher,
@@ -41,10 +44,10 @@ const AdminVisualizationsPage = () => {
   return (
     <div className="w-full min-h-screen bg-background pb-20">
       <AdminHeader
-        title="Wizualizacje"
+        title={navigation("buttons.visualisations")}
         buttons={[
           {
-            label: "Nowy projekt",
+            label: t("newProject"),
             href: "/admin/visualizations/new",
             icon: Plus,
           },
@@ -69,11 +72,9 @@ const AdminVisualizationsPage = () => {
         {!isLoading && projects?.length === 0 && (
           <Card className="border-dashed py-20 flex flex-col items-center justify-center bg-muted/20">
             <Palette className="w-12 h-12 text-muted-foreground mb-4" />
-            <p className="text-xl font-semibold">Brak wizualizacji</p>
+            <p className="text-xl font-semibold">{t("emptyVisualizations")}</p>
             <Button variant="link" asChild>
-              <Link href="/admin/visualizations/new">
-                Dodaj swój pierwszy projekt
-              </Link>
+              <Link href="/admin/visualizations/new">{t("addFirst")}</Link>
             </Button>
           </Card>
         )}
@@ -104,7 +105,7 @@ const AdminVisualizationsPage = () => {
                     variant="outline"
                     className="bg-background/80 backdrop-blur-md uppercase text-[9px] tracking-widest"
                   >
-                    {project.roomType || "Projekt"}
+                    {project.roomType || t("details")}
                   </Badge>
                 </div>
 
@@ -125,11 +126,11 @@ const AdminVisualizationsPage = () => {
                           href={`/admin/visualizations/${project.id}`}
                           className="flex items-center"
                         >
-                          <Edit2 className="mr-2 h-4 w-4" /> Edytuj
+                          <Edit2 className="mr-2 h-4 w-4" /> {t("edit")}
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="text-destructive focus:text-destructive">
-                        <Trash2 className="mr-2 h-4 w-4" /> Usuń
+                        <Trash2 className="mr-2 h-4 w-4" /> {t("delete")}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -143,14 +144,14 @@ const AdminVisualizationsPage = () => {
                   </h3>
                 </div>
                 <p className="text-sm text-muted-foreground line-clamp-2 min-h-10">
-                  {project.description || "Brak opisu projektu."}
+                  {project.description || t("descriptionMissing")}
                 </p>
               </CardHeader>
 
               <CardFooter className="p-5 pt-0 flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 border-t border-border/40 mt-2">
-                <span>Visualisation 3D</span>
+                <span>{t("visualization3d")}</span>
                 <span className="flex items-center gap-1 group-hover:text-primary transition-colors">
-                  Details <Maximize2 className="w-3 h-3" />
+                  {t("details")} <Maximize2 className="w-3 h-3" />
                 </span>
               </CardFooter>
             </Card>

@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -13,6 +14,7 @@ if (typeof window !== "undefined") {
 
 const HomePagePortfolio = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const t = useTranslations("home");
 
   // Dane zdjęć z osobnymi wartościami dla Desktop i Mobile
   const visualizations = [
@@ -171,7 +173,7 @@ const HomePagePortfolio = () => {
         {/* NAGŁÓWEK - skalowanie fontu pod mobile */}
         <div className="z-10 text-center pointer-events-none mb-4">
           <span className="text-primary font-black tracking-[0.4em] uppercase text-[9px] md:text-[10px] block mb-2 md:mb-6">
-            02 — Galeria Prac
+            {t("portfolio")}
           </span>
           <h2 className="text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black tracking-tighter leading-none text-foreground drop-shadow-xl">
             PORT<span className="text-primary italic">FOLIO</span>
@@ -190,7 +192,7 @@ const HomePagePortfolio = () => {
               data-my={img.my}
               className="portfolio-img absolute w-44 sm:w-64 md:w-80 lg:w-[420px] aspect-video object-cover 
                          rounded-xl md:rounded-2xl shadow-2xl border border-primary/20 bg-muted"
-              alt="Wizualizacja"
+              alt={t("portfolioAltVisualization")}
             />
           ))}
 
@@ -204,25 +206,25 @@ const HomePagePortfolio = () => {
               data-my={img.my}
               className="portfolio-img absolute w-44 sm:w-64 md:w-80 lg:w-[420px] aspect-video object-cover 
                          rounded-xl md:rounded-2xl shadow-2xl border border-secondary/20 bg-muted"
-              alt="Realizacja"
+              alt={t("portfolioAltFurniture")}
             />
           ))}
         </div>
 
         <div className="portfolio-actions z-30 flex flex-col md:flex-row gap-4 md:gap-6 mt-10 md:mt-16 opacity-0 w-full max-w-xs md:max-w-2xl px-6">
           <Link
-            href="/wizualizacje"
+            href="/visualizations"
             className="group flex-1 flex items-center justify-center gap-3 px-6 py-4 md:py-6 bg-primary text-primary-foreground font-black uppercase text-[11px] md:text-xs rounded-xl md:rounded-2xl hover:scale-105 transition-all shadow-xl shadow-primary/20"
           >
-            Projekty 3D{" "}
+            {t("projects3d")}{" "}
             <MoveRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
 
           <Link
-            href="/meble"
+            href="/custom-furnitures"
             className="group flex-1 flex items-center justify-center gap-3 px-6 py-4 md:py-6 bg-secondary text-secondary-foreground font-black uppercase text-[11px] md:text-xs rounded-xl md:rounded-2xl hover:scale-105 transition-all shadow-xl"
           >
-            Realizacje Meblowe{" "}
+            {t("furnitureRealizations")}{" "}
             <MoveRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform text-primary" />
           </Link>
         </div>

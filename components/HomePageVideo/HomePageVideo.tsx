@@ -2,16 +2,18 @@
 
 import React, { useRef } from "react";
 import { Button } from "../ui/button";
-import { MoveRight, Cuboid, Camera } from "lucide-react";
+import { Cuboid, Camera } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const HomePageVideo = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const descriptionRef = useRef<HTMLParagraphElement | null>(null);
   const buttonsRef = useRef<HTMLDivElement | null>(null);
+  const t = useTranslations("home");
 
   useGSAP(
     () => {
@@ -87,7 +89,7 @@ const HomePageVideo = () => {
           className="mb-6 px-5 py-2 rounded-full border border-primary/50 bg-secondary/80 dark:bg-primary/10 text-primary dark:text-primary text-xs md:text-sm font-bold tracking-[0.3em] uppercase opacity-0 shadow-lg"
           style={{ animation: "fadeIn 1s forwards 0.5s" }}
         >
-          Architektura & Wykonawstwo
+          {t("tagline")}
         </span>
 
         {/* Tytuł: Używamy text-foreground, który automatycznie zmienia kolor #2F241D <-> #ede7d6 */}
@@ -95,7 +97,8 @@ const HomePageVideo = () => {
           ref={titleRef}
           className="text-5xl md:text-7xl lg:text-[8.5rem] font-black max-w-7xl tracking-tighter leading-[0.85] mb-8 text-foreground drop-shadow-[0_5px_15px_rgba(0,0,0,0.2)] dark:drop-shadow-none"
         >
-          Od wizji do <span className="text-primary italic">realizacji</span>
+          {t("heroTitle")}{" "}
+          <span className="text-primary italic">{t("heroTitleAccent")}</span>
         </h1>
 
         {/* Opis: text-muted-foreground zapewnia czytelność bez "krzyczenia" */}
@@ -103,8 +106,7 @@ const HomePageVideo = () => {
           ref={descriptionRef}
           className="text-lg md:text-2xl max-w-3xl text-foreground/80 dark:text-muted-foreground mb-12 leading-relaxed font-medium bg-background/20 backdrop-blur-sm md:bg-transparent rounded-lg p-4 md:p-0"
         >
-          Projektujemy fotorealistyczne wnętrza 3D i tworzymy meble na wymiar,
-          łącząc świat cyfrowej precyzji z rzemieślniczą pasją.
+          {t("heroDescription")}
         </p>
 
         {/* PRZYCISKI */}
@@ -113,23 +115,23 @@ const HomePageVideo = () => {
           className="flex flex-col md:flex-row gap-6 w-full max-w-2xl"
         >
           {/* Ścieżka: Wizualizacje */}
-          <Link href="/wizualizacje" className="flex-1">
+          <Link href="/visualizations" className="flex-1">
             <Button
               size="lg"
               className="nav-button w-full bg-primary text-primary-foreground hover:ring-4 hover:ring-primary/30 rounded-2xl px-8 py-12 text-xl font-black shadow-2xl transition-all hover:-translate-y-1 group"
             >
               <div className="flex flex-col items-center gap-2">
                 <Camera className="w-8 h-8 group-hover:scale-110 transition-transform" />
-                <span>Wizualizacje 3D</span>
+                <span>{t("visualizations")}</span>
                 <span className="text-[10px] font-normal tracking-widest opacity-80">
-                  ZOBACZ PROJEKTY
+                  {t("seeProjects")}
                 </span>
               </div>
             </Button>
           </Link>
 
           {/* Ścieżka: Meble */}
-          <Link href="/meble" className="flex-1">
+          <Link href="/custom-furnitures" className="flex-1">
             <Button
               variant="outline"
               size="lg"
@@ -137,9 +139,9 @@ const HomePageVideo = () => {
             >
               <div className="flex flex-col items-center gap-2">
                 <Cuboid className="w-8 h-8 group-hover:scale-110 transition-transform text-primary" />
-                <span>Meble na wymiar</span>
+                <span>{t("furniture")}</span>
                 <span className="text-[10px] font-normal tracking-widest opacity-60">
-                  ZOBACZ REALIZACJE
+                  {t("seeRealizations")}
                 </span>
               </div>
             </Button>
@@ -148,7 +150,7 @@ const HomePageVideo = () => {
 
         <div className="scroll-indicator absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-foreground dark:text-muted-foreground/60">
-            Zjedź niżej
+            {t("scrollDown")}
           </span>
           <div className="w-px h-16 bg-gradient-to-b from-primary to-transparent" />
         </div>
