@@ -18,18 +18,24 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ProjectThemes } from "@/enums";
-import { roomTypeOptions } from "@/enums/selectOptions";
 import {
   NewCustomFurnitureSchema,
   NewCustomFurnitureSchemaType,
 } from "@/zodSchema/newCustomFurniture";
 import { useTranslations } from "next-intl";
+import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { postFetcher } from "@/constans/apiFetcherFunction";
+import { getFetcher, postFetcher } from "@/constans/apiFetcherFunction";
+
+type RoomType = { id: string; label: string };
 
 const NewCustomFurnitureForm = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const t = useTranslations("common");
+  const { data: roomTypes = [] } = useSWR<RoomType[]>(
+    "/api/room-types",
+    getFetcher,
+  );
 
   const { trigger: createProject, isMutating: isLoading } = useSWRMutation(
     "/api/custom-furnitures/new",
@@ -125,9 +131,9 @@ const NewCustomFurnitureForm = () => {
                   <SelectValue placeholder={t("chooseType")} />
                 </SelectTrigger>
                 <SelectContent>
-                  {roomTypeOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {t(`roomTypes.${option.value}`)}
+                  {roomTypes.map((option) => (
+                    <SelectItem key={option.id} value={option.id}>
+                      {option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

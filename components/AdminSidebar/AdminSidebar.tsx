@@ -15,7 +15,14 @@ import {
   useSidebar,
 } from "../ui/sidebar";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, LayoutDashboard, Users, TableProperties } from "lucide-react";
+import {
+  LogOut,
+  LayoutDashboard,
+  Users,
+  TableProperties,
+  ChartNoAxesColumnIncreasing,
+  Tags,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -42,6 +49,12 @@ const AdminSidebar = () => {
   const navigationPaths = [
     { title: t("heading"), url: "/admin", icon: LayoutDashboard },
     { title: t("recent"), url: "/admin/contact", icon: Users },
+    {
+      title: t("homeStats"),
+      url: "/admin/home-stats",
+      icon: ChartNoAxesColumnIncreasing,
+    },
+    { title: t("roomTypes"), url: "/admin/room-types", icon: Tags },
     {
       title: t("stats.visualizations"),
       url: "/admin/visualizations",

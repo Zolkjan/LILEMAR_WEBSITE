@@ -19,17 +19,23 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ProjectThemes } from "@/enums";
 import useSWRMutation from "swr/mutation";
-import { postFetcher } from "@/constans/apiFetcherFunction";
-import { roomTypeOptions } from "@/enums/selectOptions";
+import useSWR from "swr";
+import { getFetcher, postFetcher } from "@/constans/apiFetcherFunction";
 import {
   NewVisualisationSchema,
   NewVisualisationSchemaType,
 } from "@/zodSchema/newVisualization";
 import { useTranslations } from "next-intl";
 
+type RoomType = { id: string; label: string };
+
 const NewVisualizationForm = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const t = useTranslations("common");
+  const { data: roomTypes = [] } = useSWR<RoomType[]>(
+    "/api/room-types",
+    getFetcher,
+  );
 
   const form = useForm<NewVisualisationSchemaType>({
     resolver: zodResolver(NewVisualisationSchema),
@@ -125,9 +131,9 @@ const NewVisualizationForm = () => {
                   <SelectValue placeholder={t("chooseType")} />
                 </SelectTrigger>
                 <SelectContent>
-                  {roomTypeOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {t(`roomTypes.${option.value}`)}
+                  {roomTypes.map((option) => (
+                    <SelectItem key={option.id} value={option.id}>
+                      {option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

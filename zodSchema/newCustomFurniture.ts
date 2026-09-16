@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ProjectThemes, RoomTypes } from "@/enums";
+import { ProjectThemes } from "@/enums";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = [
@@ -29,18 +29,7 @@ export const NewCustomFurnitureSchema = z.object({
         files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
       "Dozwolone formaty to .jpg, .jpeg, .png oraz .webp",
     ),
-  roomType: z.enum(
-    [
-      RoomTypes.KITCHEN,
-      RoomTypes.LIVING_ROOM,
-      RoomTypes.BEDROOM,
-      RoomTypes.BATHROOM,
-      RoomTypes.OFFICE,
-    ],
-    {
-      message: "Wybierz typ pomieszczenia",
-    },
-  ),
+  roomType: z.string().min(1, "Wybierz typ pomieszczenia"),
 });
 
 export type NewCustomFurnitureSchemaType = z.infer<

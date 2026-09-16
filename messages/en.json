@@ -43,7 +43,9 @@
       "systemDescription": "All modules active"
     },
     "recent": "Recent work",
-    "lastEdited": "Last edited: 2 hours ago"
+    "lastEdited": "Last edited: 2 hours ago",
+    "homeStats": "Homepage statistics",
+    "roomTypes": "Room library"
   },
   "navigation": {
     "title": "Navigation",
@@ -190,6 +192,30 @@
     "loadError": "Could not load contact settings.",
     "saveSuccess": "Contact settings saved.",
     "saveError": "Could not save contact settings."
+  },
+  "homeStatsSettings": {
+    "title": "Homepage statistics",
+    "description": "Change the values displayed in the achievements section on the homepage.",
+    "experience": "Experience",
+    "interiorProjects": "Interior projects",
+    "builtIns": "Built-in furniture",
+    "attentionToDetail": "Attention to detail",
+    "save": "Save statistics",
+    "loadError": "Could not load homepage statistics.",
+    "saveSuccess": "Homepage statistics have been saved.",
+    "saveError": "Could not save homepage statistics."
+  },
+  "roomTypesSettings": {
+    "title": "Room library",
+    "description": "Add custom rooms available when creating projects and filtering the portfolio.",
+    "placeholder": "e.g. Walk-in closet",
+    "add": "Add room",
+    "default": "Default",
+    "delete": "Delete room",
+    "addSuccess": "Room added.",
+    "addError": "Could not add the room.",
+    "deleteSuccess": "Room deleted.",
+    "deleteError": "Could not delete the room."
   },
   "portfolio": {
     "gallery": "Project gallery",

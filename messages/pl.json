@@ -43,7 +43,9 @@
       "systemDescription": "Wszystkie moduły aktywne"
     },
     "recent": "Ostatnie realizacje",
-    "lastEdited": "Ostatnia edycja: 2 godz. temu"
+    "lastEdited": "Ostatnia edycja: 2 godz. temu",
+    "homeStats": "Statystyki strony głównej",
+    "roomTypes": "Biblioteka pomieszczeń"
   },
   "navigation": {
     "title": "Nawigacja",
@@ -190,6 +192,30 @@
     "loadError": "Nie udało się pobrać ustawień kontaktu.",
     "saveSuccess": "Ustawienia kontaktu zostały zapisane.",
     "saveError": "Nie udało się zapisać ustawień kontaktu."
+  },
+  "homeStatsSettings": {
+    "title": "Statystyki strony głównej",
+    "description": "Zmień wartości wyświetlane w sekcji z osiągnięciami na stronie głównej.",
+    "experience": "Doświadczenie",
+    "interiorProjects": "Projekty wnętrz",
+    "builtIns": "Wykonane zabudowy",
+    "attentionToDetail": "Dbałość o detal",
+    "save": "Zapisz statystyki",
+    "loadError": "Nie udało się pobrać statystyk strony głównej.",
+    "saveSuccess": "Statystyki strony głównej zostały zapisane.",
+    "saveError": "Nie udało się zapisać statystyk strony głównej."
+  },
+  "roomTypesSettings": {
+    "title": "Biblioteka pomieszczeń",
+    "description": "Dodawaj własne pomieszczenia do wyboru podczas tworzenia projektów i do filtrów portfolio.",
+    "placeholder": "np. Garderoba",
+    "add": "Dodaj pomieszczenie",
+    "default": "Domyślne",
+    "delete": "Usuń pomieszczenie",
+    "addSuccess": "Pomieszczenie zostało dodane.",
+    "addError": "Nie udało się dodać pomieszczenia.",
+    "deleteSuccess": "Pomieszczenie zostało usunięte.",
+    "deleteError": "Nie udało się usunąć pomieszczenia."
   },
   "portfolio": {
     "gallery": "Galeria projektów",

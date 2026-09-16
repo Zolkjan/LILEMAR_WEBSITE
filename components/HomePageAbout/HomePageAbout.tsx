@@ -1,17 +1,39 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Camera, Hammer } from "lucide-react"; // Zmieniono na Hammer dla rzemiosła
 import { useTranslations } from "next-intl";
+import { getFetcher } from "@/constans/apiFetcherFunction";
 
 gsap.registerPlugin(ScrollTrigger);
+
+type HomeStats = {
+  experience: string;
+  interiorProjects: string;
+  builtIns: string;
+  attentionToDetail: string;
+};
+
+const defaultStats: HomeStats = {
+  experience: "12",
+  interiorProjects: "300+",
+  builtIns: "150+",
+  attentionToDetail: "100%",
+};
 
 const HomePageAbout = () => {
   const t = useTranslations("home");
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [stats, setStats] = useState(defaultStats);
+
+  useEffect(() => {
+    getFetcher("/api/home-stats")
+      .then(setStats)
+      .catch(() => undefined);
+  }, []);
 
   useGSAP(
     () => {
@@ -110,10 +132,10 @@ const HomePageAbout = () => {
         {/* PASEK STATYSTYK - Informacje ogólne */}
         <div className="stats-container mt-20 grid grid-cols-2 lg:grid-cols-4 gap-12 py-12 px-6">
           {[
-            { label: t("experience"), val: "12" },
-            { label: t("interiorProjects"), val: "300+" },
-            { label: t("builtIns"), val: "150+" },
-            { label: t("attentionToDetail"), val: "100%" },
+            { label: t("experience"), val: stats.experience },
+            { label: t("interiorProjects"), val: stats.interiorProjects },
+            { label: t("builtIns"), val: stats.builtIns },
+            { label: t("attentionToDetail"), val: stats.attentionToDetail },
           ].map((stat, i) => (
             <div
               key={i}

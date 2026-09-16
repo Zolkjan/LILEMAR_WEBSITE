@@ -1,4 +1,4 @@
-import { ProjectModules, ProjectThemes, RoomTypes } from "@/enums";
+import { ProjectModules, ProjectThemes } from "@/enums";
 
 export type VisualisationType = {
   id?: string;
@@ -7,7 +7,7 @@ export type VisualisationType = {
   images?: string[];
   createdAt?: string;
   updatedAt?: string;
-  roomType: RoomTypes;
+  roomType: string;
   theme: ProjectThemes;
   projectModule: ProjectModules;
 };
@@ -19,6 +19,6 @@ export type CustomFurnitureType = {
   images?: string[];
   createdAt?: string;
   updatedAt?: string;
-  roomType: RoomTypes;
+  roomType: string;
   theme: ProjectThemes;
 };

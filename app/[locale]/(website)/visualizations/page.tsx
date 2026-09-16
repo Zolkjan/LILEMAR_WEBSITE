@@ -7,7 +7,6 @@ import { useGSAP } from "@gsap/react";
 import { getFetcher } from "@/constans/apiFetcherFunction";
 import { VisualisationType } from "@/types";
 import { ProjectThemes } from "@/enums";
-import { roomTypeOptions } from "@/enums/selectOptions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -15,15 +14,20 @@ import { MessageCircle, X, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
+type RoomType = { id: string; label: string };
+
 const VisualizationsPage = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("portfolio");
-  const common = useTranslations("common");
   const {
     data: projects,
     error: projectsError,
     isLoading,
   } = useSWR<VisualisationType[]>("/api/visualizations", getFetcher);
+  const { data: roomTypes = [] } = useSWR<RoomType[]>(
+    "/api/room-types",
+    getFetcher,
+  );
 
   const [activeRoom, setActiveRoom] = useState<string>("all");
   const [activeTheme, setActiveTheme] = useState<string>("all");
@@ -144,14 +148,14 @@ const VisualizationsPage = () => {
             >
               {t("allRealizations")}
             </Button>
-            {roomTypeOptions.map((opt) => (
+            {roomTypes.map((room) => (
               <Button
-                key={opt.value}
-                variant={activeRoom === opt.value ? "default" : "ghost"}
-                onClick={() => setActiveRoom(opt.value)}
+                key={room.id}
+                variant={activeRoom === room.id ? "default" : "ghost"}
+                onClick={() => setActiveRoom(room.id)}
                 className="rounded-full px-6 uppercase text-[10px] font-bold tracking-widest"
               >
-                {common(`roomTypes.${opt.value}`)}
+                {room.label}
               </Button>
             ))}
           </div>
@@ -187,7 +191,8 @@ const VisualizationsPage = () => {
                   />
                   <div className="absolute top-6 left-6 z-20">
                     <Badge className="bg-background/90 text-foreground backdrop-blur-md border-none px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">
-                      {project.roomType}
+                      {roomTypes.find((room) => room.id === project.roomType)
+                        ?.label ?? project.roomType}
                     </Badge>
                   </div>
                 </div>
