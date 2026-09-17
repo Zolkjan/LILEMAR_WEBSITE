@@ -8,39 +8,58 @@ import {
   Clock,
   Hammer,
   ArrowUpRight,
-  Plus,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import useSWR from "swr";
+import { Loader2 } from "lucide-react";
+import { getFetcher } from "@/constans/apiFetcherFunction";
+
+type DashboardStats = {
+  furnitureCount: number;
+  visualizationsCount: number;
+  furnitureThisMonth: number;
+  viewsCount: number;
+  recentProjects: { id: string; title: string }[];
+};
 
 const AdminPage = () => {
   const t = useTranslations("admin");
+  const { data, error, isLoading } = useSWR<DashboardStats>(
+    "/api/admin/stats",
+    getFetcher,
+  );
 
-  // Dane statyczne dopasowane do Twojej palety
   const stats = [
     {
       title: t("stats.projects"),
-      value: "24",
-      description: t("stats.projectsDescription"),
+      value: data?.furnitureCount ?? "-",
+      description: t("stats.projectsDescription", {
+        count: data?.furnitureThisMonth ?? 0,
+      }),
       icon: Hammer,
     },
     {
       title: t("stats.visualizations"),
-      value: "12",
-      description: t("stats.visualizationsDescription"),
+      value: data?.visualizationsCount ?? "-",
+      description: t("stats.visualizationsDescription", {
+        count: data?.visualizationsCount ?? 0,
+      }),
       icon: Images,
     },
     {
       title: t("stats.views"),
-      value: "1,284",
-      description: t("stats.viewsDescription"),
+      value: data?.viewsCount ?? "-",
+      description: t("stats.viewsDescription", {
+        count: data?.viewsCount ?? 0,
+      }),
       icon: TrendingUp,
     },
     {
       title: t("stats.system"),
-      value: "Online",
-      description: t("stats.systemDescription"),
+      value: error ? t("stats.offline") : data ? t("stats.online") : "-",
+      description: error
+        ? t("stats.systemError")
+        : t("stats.systemDescription"),
       icon: Clock,
     },
   ];
@@ -90,10 +109,19 @@ const AdminPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="space-y-4">
-              {[1, 2, 3].map((item) => (
+            {isLoading && (
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            )}
+            {!isLoading && data?.recentProjects.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                {t("noRecentProjects")}
+              </p>
+            )}
+            {!isLoading && data && (
+              <div className="space-y-4">
+                {data.recentProjects.map((project) => (
                 <div
-                  key={item}
+                  key={project.id}
                   className="flex items-center justify-between p-4 rounded-lg bg-background border border-border group hover:border-primary transition-all cursor-pointer"
                 >
                   <div className="flex items-center gap-4">
@@ -102,17 +130,15 @@ const AdminPage = () => {
                     </div>
                     <div>
                       <p className="font-black text-foreground uppercase text-sm">
-                        Szafa przesuwna dębowa v{item}
-                      </p>
-                      <p className="text-xs text-muted-foreground font-medium">
-                        {t("lastEdited")}
+                        {project.title}
                       </p>
                     </div>
                   </div>
                   <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

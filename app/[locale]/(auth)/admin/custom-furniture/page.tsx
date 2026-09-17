@@ -33,6 +33,12 @@ const AdminCustomFurniturePage = () => {
     getFetcher,
   );
 
+  const deleteProject = async (id: string) => {
+    if (!window.confirm(t("deleteConfirmation"))) return;
+    await fetch(`/api/custom-furnitures/${id}`, { method: "DELETE" });
+    window.location.reload();
+  };
+
   console.log(projects);
 
   return (
@@ -118,13 +124,13 @@ const AdminCustomFurniturePage = () => {
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
                         <Link
-                          href={`/admin/custom-furniture/${project.id}`}
+                          href={`/admin/custom-furniture/${project.id}/edit`}
                           className="flex items-center"
                         >
                           <Edit2 className="mr-2 h-4 w-4" /> {t("edit")}
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive focus:text-destructive">
+                      <DropdownMenuItem onClick={() => project.id && deleteProject(project.id)} className="text-destructive focus:text-destructive">
                         <Trash2 className="mr-2 h-4 w-4" /> {t("delete")}
                       </DropdownMenuItem>
                     </DropdownMenuContent>

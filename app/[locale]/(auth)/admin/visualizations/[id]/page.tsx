@@ -12,20 +12,22 @@ import {
   Info,
   Loader2,
   Edit,
-  PowerOff,
+  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
 import { getFetcher } from "@/constans/apiFetcherFunction";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 const VisualisationPreviewPage = () => {
   const params = useParams();
   const projectId = params.id;
+  const router = useRouter();
   const t = useTranslations("details");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { data: projectData, isLoading } = useSWR(
     projectId ? `/api/visualizations/${projectId}` : null,
@@ -59,6 +61,17 @@ const VisualisationPreviewPage = () => {
     features: projectData.features || ["Nowoczesny design", "Wysoka jakość"],
   };
 
+  const deleteProject = async () => {
+    if (!window.confirm(t("deleteConfirmation"))) return;
+    setIsDeleting(true);
+    try {
+      await fetch(`/api/visualizations/${projectId}`, { method: "DELETE" });
+      router.push("/admin/visualizations");
+      router.refresh();
+    } finally {
+      setIsDeleting(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <nav className="sticky top-0 z-20 bg-background/80 backdrop-blur-md">
@@ -69,7 +82,7 @@ const VisualisationPreviewPage = () => {
               asChild
               className="text-muted-foreground hover:text-foreground hover:bg-muted transition-colors rounded-md px-2"
             >
-              <Link href="/admin/custom-furniture">
+              <Link href="/admin/visualizations">
                 <ChevronLeft className="w-5 h-5" />
               </Link>
             </Button>
@@ -79,18 +92,13 @@ const VisualisationPreviewPage = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              className="border-border hover:bg-muted font-bold text-xs uppercase tracking-widest px-6 h-10 transition-all"
-            >
-              <Edit className="w-4 h-4 mr-2" /> {t("edit")}
+            <Button variant="outline" asChild className="border-border hover:bg-muted font-bold text-xs uppercase tracking-widest px-6 h-10 transition-all">
+              <Link href={`/admin/visualizations/${projectId}/edit`}>
+                <Edit className="w-4 h-4 mr-2" /> {t("edit")}
+              </Link>
             </Button>
-
-            <Button
-              variant="destructive"
-              className="bg-destructive text-destructive-foreground font-bold text-xs uppercase tracking-widest px-6 h-10 shadow-sm transition-all"
-            >
-              <PowerOff className="w-4 h-4 mr-2" /> {t("deactivate")}
+            <Button variant="destructive" onClick={deleteProject} disabled={isDeleting} className="bg-destructive text-destructive-foreground font-bold text-xs uppercase tracking-widest px-6 h-10 shadow-sm transition-all">
+              {isDeleting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />} {t("delete")}
             </Button>
           </div>
         </div>

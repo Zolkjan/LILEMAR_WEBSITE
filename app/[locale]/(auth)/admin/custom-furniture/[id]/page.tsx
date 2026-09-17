@@ -12,20 +12,24 @@ import {
   CheckCircle2,
   Info,
   Loader2,
+  Edit,
+  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
 import { getFetcher } from "@/constans/apiFetcherFunction";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 const CustomFurniturePreviewPage = () => {
   const params = useParams();
   const projectId = params.id;
+  const router = useRouter();
   const t = useTranslations("details");
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { data: projectData, isLoading } = useSWR(
     projectId ? `/api/custom-furnitures/${projectId}` : null,
@@ -35,6 +39,18 @@ const CustomFurniturePreviewPage = () => {
     "/api/technologies",
     getFetcher,
   );
+
+  const deleteProject = async () => {
+    if (!window.confirm(t("deleteConfirmation"))) return;
+    setIsDeleting(true);
+    try {
+      await fetch(`/api/custom-furnitures/${projectId}`, { method: "DELETE" });
+      router.push("/admin/custom-furniture");
+      router.refresh();
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   console.log(projectData);
 
@@ -87,8 +103,13 @@ const CustomFurniturePreviewPage = () => {
           >
             <Share2 className="w-4 h-4" />
           </Button>
-          <Button className="bg-primary text-primary-foreground font-black uppercase text-xs px-6 shadow-[4px_4px_0px_0px_rgba(46,46,46,1)]">
-            {t("publish")}
+          <Button variant="outline" asChild className="font-black uppercase text-xs px-6">
+            <Link href={`/admin/custom-furniture/${projectId}/edit`}>
+              <Edit className="mr-2 h-4 w-4" /> {t("edit")}
+            </Link>
+          </Button>
+          <Button variant="destructive" onClick={deleteProject} disabled={isDeleting} className="font-black uppercase text-xs px-6">
+            {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />} {t("delete")}
           </Button>
         </div>
       </div>
