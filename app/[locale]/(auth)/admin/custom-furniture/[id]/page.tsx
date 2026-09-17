@@ -31,6 +31,10 @@ const CustomFurniturePreviewPage = () => {
     projectId ? `/api/custom-furnitures/${projectId}` : null,
     getFetcher,
   );
+  const { data: technologies = [] } = useSWR<{ id: string; label: string }[]>(
+    "/api/technologies",
+    getFetcher,
+  );
 
   console.log(projectData);
 
@@ -56,7 +60,11 @@ const CustomFurniturePreviewPage = () => {
     roomType: projectData.roomType || "Niezdefiniowany",
     theme: projectData.theme || "LIGHT",
     images: projectData.images || [],
-    features: projectData.features || ["Nowoczesny design", "Wysoka jakość"],
+    technologies: (projectData.technologies || []).map(
+      (technologyId: string) =>
+        technologies.find((technology) => technology.id === technologyId)
+          ?.label ?? technologyId,
+    ),
   };
 
   return (
@@ -160,14 +168,14 @@ const CustomFurniturePreviewPage = () => {
               {t("equipment")}
             </h3>
             <div className="grid grid-cols-2 gap-3">
-              {displayData.features.map((feature: string) => (
+              {displayData.technologies.map((technology: string) => (
                 <div
-                  key={feature}
+                  key={technology}
                   className="flex items-center gap-2 p-3 rounded-lg border border-border bg-muted/30"
                 >
                   <CheckCircle2 className="w-4 h-4 text-primary" />
                   <span className="text-xs font-bold text-foreground uppercase">
-                    {feature}
+                    {technology}
                   </span>
                 </div>
               ))}

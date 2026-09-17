@@ -30,6 +30,7 @@ export const NewCustomFurnitureSchema = z.object({
       "Dozwolone formaty to .jpg, .jpeg, .png oraz .webp",
     ),
   roomType: z.string().min(1, "Wybierz typ pomieszczenia"),
+  technologies: z.array(z.string()),
 });
 
 export type NewCustomFurnitureSchemaType = z.infer<

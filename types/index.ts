@@ -21,4 +21,5 @@ export type CustomFurnitureType = {
   updatedAt?: string;
   roomType: string;
   theme: ProjectThemes;
+  technologies?: string[];
 };

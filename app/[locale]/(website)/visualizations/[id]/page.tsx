@@ -10,7 +10,7 @@ import { useGSAP } from "@gsap/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Moon, Sun, ArrowRight, Share2 } from "lucide-react";
+import { ChevronLeft, Moon, Sun, Share2 } from "lucide-react";
 import { getFetcher } from "@/constans/apiFetcherFunction";
 import { VisualisationType } from "@/types";
 import CustomFurniturePage from "../../custom-furnitures/[id]/page";
@@ -125,13 +125,6 @@ const VisualisationPage = () => {
             <p className="reveal-text text-muted-foreground/80 text-lg md:text-xl font-light leading-relaxed max-w-lg uppercase tracking-tight">
               {projectData.description}
             </p>
-
-            <div className="reveal-text pt-6">
-              <Button className="bg-foreground text-background hover:bg-primary hover:text-primary-foreground rounded-full h-16 px-12 text-[10px] font-black uppercase tracking-[0.3em] transition-all group">
-                {t("startProject")}
-                <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" />
-              </Button>
-            </div>
           </div>
         </section>
 

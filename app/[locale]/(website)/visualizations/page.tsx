@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import useSWR from "swr";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -32,6 +32,21 @@ const VisualizationsPage = () => {
   const [activeRoom, setActiveRoom] = useState<string>("all");
   const [activeTheme, setActiveTheme] = useState<string>("all");
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [contactSettings, setContactSettings] = useState({
+    visualizationEmail: "wizualizacje@lilemar.pl",
+    visualizationPhone: "+48 000 000 001",
+  });
+
+  useEffect(() => {
+    getFetcher("/api/contact-settings")
+      .then((settings) =>
+        setContactSettings({
+          visualizationEmail: settings.visualizationEmail,
+          visualizationPhone: settings.visualizationPhone,
+        }),
+      )
+      .catch(() => undefined);
+  }, []);
 
   const filteredProjects = useMemo(() => {
     return (
@@ -231,14 +246,20 @@ const VisualizationsPage = () => {
               className="w-full h-14 rounded-2xl font-black uppercase text-[10px] tracking-widest"
               asChild
             >
-              <a href="mailto:biuro@lilemar.pl">{t("send")}</a>
+              <a href={`mailto:${contactSettings.visualizationEmail}`}>
+                {t("send")}
+              </a>
             </Button>
             <Button
               variant="outline"
               className="w-full h-14 rounded-2xl font-black uppercase text-[10px] tracking-widest"
               asChild
             >
-              <a href="tel:+48000000000">{t("call")}</a>
+              <a
+                href={`tel:${contactSettings.visualizationPhone.replace(/\s/g, "")}`}
+              >
+                {t("call")}
+              </a>
             </Button>
           </div>
         </div>

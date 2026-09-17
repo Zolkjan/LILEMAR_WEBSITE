@@ -15,6 +15,8 @@
     "projectDescription": "Opis projektu",
     "theme": "Klimat / Motyw kolorystyczny",
     "gallery": "Galeria zdjęć",
+    "technologies": "Technologie użyte w projekcie",
+    "noTechnologies": "Brak dostępnych technologii. Dodaj je w słowniku administratora.",
     "footerDescription": "Tworzymy unikalne projekty architektoniczne i wnętrza, które łączą estetykę z najwyższą funkcjonalnością. Każdy detal ma znaczenie.",
     "navigation": "Nawigacja",
     "footerAddress": "ul. Projektowa 12, 00-001 Warszawa",
@@ -43,9 +45,12 @@
       "systemDescription": "Wszystkie moduły aktywne"
     },
     "recent": "Ostatnie realizacje",
+    "myData": "Moje dane",
     "lastEdited": "Ostatnia edycja: 2 godz. temu",
     "homeStats": "Statystyki strony głównej",
-    "roomTypes": "Biblioteka pomieszczeń"
+    "roomTypes": "Biblioteka pomieszczeń",
+    "technologies": "Biblioteka technologii",
+    "customFurniture": "Meble na wymiar"
   },
   "navigation": {
     "title": "Nawigacja",
@@ -217,6 +222,17 @@
     "deleteSuccess": "Pomieszczenie zostało usunięte.",
     "deleteError": "Nie udało się usunąć pomieszczenia."
   },
+  "technologiesSettings": {
+    "title": "Biblioteka technologii",
+    "description": "Dodawaj technologie używane w realizacjach mebli i wybieraj je podczas tworzenia projektu.",
+    "placeholder": "np. Lakierowanie frontów",
+    "add": "Dodaj technologię",
+    "delete": "Usuń technologię",
+    "addSuccess": "Technologia została dodana.",
+    "addError": "Nie udało się dodać technologii.",
+    "deleteSuccess": "Technologia została usunięta.",
+    "deleteError": "Nie udało się usunąć technologii."
+  },
   "portfolio": {
     "gallery": "Galeria projektów",
     "all": "Wszystkie",
@@ -250,6 +266,7 @@
     "deactivate": "Dezaktywuj",
     "technicalDescription": "Opis techniczny",
     "equipment": "Wyposażenie i systemy",
+    "technologies": "Technologie użyte w projekcie",
     "adminMode": "Tryb administracyjny",
     "active": "Status: Aktywny",
     "startProject": "Rozpocznij projekt",

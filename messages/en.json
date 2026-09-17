@@ -15,6 +15,8 @@
     "projectDescription": "Project description",
     "theme": "Mood / Color theme",
     "gallery": "Image gallery",
+    "technologies": "Technologies used in the project",
+    "noTechnologies": "No technologies available. Add them in the admin dictionary.",
     "footerDescription": "We create unique architectural and interior projects that combine aesthetics with outstanding functionality. Every detail matters.",
     "navigation": "Navigation",
     "footerAddress": "12 Projektowa Street, 00-001 Warsaw",
@@ -43,9 +45,12 @@
       "systemDescription": "All modules active"
     },
     "recent": "Recent work",
+    "myData": "My details",
     "lastEdited": "Last edited: 2 hours ago",
     "homeStats": "Homepage statistics",
-    "roomTypes": "Room library"
+    "roomTypes": "Room library",
+    "technologies": "Technology library",
+    "customFurniture": "Custom furniture"
   },
   "navigation": {
     "title": "Navigation",
@@ -217,6 +222,17 @@
     "deleteSuccess": "Room deleted.",
     "deleteError": "Could not delete the room."
   },
+  "technologiesSettings": {
+    "title": "Technology library",
+    "description": "Add technologies used in custom furniture projects and select them when creating a project.",
+    "placeholder": "e.g. Lacquered fronts",
+    "add": "Add technology",
+    "delete": "Delete technology",
+    "addSuccess": "Technology added.",
+    "addError": "Could not add the technology.",
+    "deleteSuccess": "Technology deleted.",
+    "deleteError": "Could not delete the technology."
+  },
   "portfolio": {
     "gallery": "Project gallery",
     "all": "All",
@@ -250,6 +266,7 @@
     "deactivate": "Deactivate",
     "technicalDescription": "Technical description",
     "equipment": "Equipment and systems",
+    "technologies": "Technologies used in the project",
     "adminMode": "Administration mode",
     "active": "Status: Active",
     "startProject": "Start a project",

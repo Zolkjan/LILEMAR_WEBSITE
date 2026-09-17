@@ -3,7 +3,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Loader2, X, ImagePlus, Sun, Moon } from "lucide-react";
+import { Loader2, X, ImagePlus, Sun, Moon, Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,12 +28,17 @@ import useSWRMutation from "swr/mutation";
 import { getFetcher, postFetcher } from "@/constans/apiFetcherFunction";
 
 type RoomType = { id: string; label: string };
+type Technology = { id: string; label: string };
 
 const NewCustomFurnitureForm = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const t = useTranslations("common");
   const { data: roomTypes = [] } = useSWR<RoomType[]>(
     "/api/room-types",
+    getFetcher,
+  );
+  const { data: technologies = [] } = useSWR<Technology[]>(
+    "/api/technologies",
     getFetcher,
   );
 
@@ -50,6 +55,7 @@ const NewCustomFurnitureForm = () => {
       images: [],
       theme: ProjectThemes.LIGHT,
       roomType: undefined,
+      technologies: [],
     },
   });
 
@@ -79,6 +85,7 @@ const NewCustomFurnitureForm = () => {
       formData.append("description", data.description);
       formData.append("theme", data.theme);
       formData.append("roomType", data.roomType);
+      formData.append("technologies", JSON.stringify(data.technologies));
 
       data.images.forEach((file) => {
         formData.append("images", file);
@@ -138,6 +145,56 @@ const NewCustomFurnitureForm = () => {
                   ))}
                 </SelectContent>
               </Select>
+              {fieldState.error && (
+                <FieldError>{fieldState.error.message}</FieldError>
+              )}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="technologies"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field className="space-y-3">
+              <FieldLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                {t("technologies")}
+              </FieldLabel>
+              {technologies.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  {t("noTechnologies")}
+                </p>
+              ) : (
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {technologies.map((technology) => {
+                    const isSelected = field.value.includes(technology.id);
+                    return (
+                      <button
+                        key={technology.id}
+                        type="button"
+                        aria-pressed={isSelected}
+                        onClick={() =>
+                          field.onChange(
+                            isSelected
+                              ? field.value.filter((id) => id !== technology.id)
+                              : [...field.value, technology.id],
+                          )
+                        }
+                        className={`flex items-center justify-between rounded-xl border-2 p-4 text-left transition-all ${
+                          isSelected
+                            ? "border-primary bg-primary/5"
+                            : "border-border bg-background hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="font-medium">{technology.label}</span>
+                        {isSelected && (
+                          <Check className="h-4 w-4 text-primary" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
               {fieldState.error && (
                 <FieldError>{fieldState.error.message}</FieldError>
               )}

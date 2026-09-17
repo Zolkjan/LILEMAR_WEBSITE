@@ -48,20 +48,21 @@ const AdminSidebar = () => {
 
   const navigationPaths = [
     { title: t("heading"), url: "/admin", icon: LayoutDashboard },
-    { title: t("recent"), url: "/admin/contact", icon: Users },
+    { title: t("myData"), url: "/admin/contact", icon: Users },
     {
       title: t("homeStats"),
       url: "/admin/home-stats",
       icon: ChartNoAxesColumnIncreasing,
     },
     { title: t("roomTypes"), url: "/admin/room-types", icon: Tags },
+    { title: t("technologies"), url: "/admin/technologies", icon: Tags },
     {
       title: t("stats.visualizations"),
       url: "/admin/visualizations",
       icon: TableProperties,
     },
     {
-      title: t("stats.projects"),
+      title: t("customFurniture"),
       url: "/admin/custom-furniture",
       icon: TableProperties,
     },

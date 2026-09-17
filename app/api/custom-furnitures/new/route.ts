@@ -11,13 +11,28 @@ export const POST = async (request: Request) => {
     const description = formData.get("description") as string;
     const theme = formData.get("theme") as string;
     const roomType = formData.get("roomType") as string;
+    const technologiesValue = formData.get("technologies");
+    const technologies = technologiesValue
+      ? (JSON.parse(String(technologiesValue)) as unknown)
+      : [];
     const imageFiles = formData.getAll("images") as File[];
+
+    if (
+      !Array.isArray(technologies) ||
+      !technologies.every((technology) => typeof technology === "string")
+    ) {
+      return NextResponse.json(
+        { message: "Nieprawidłowa lista technologii" },
+        { status: 400 },
+      );
+    }
 
     docRef = await firestore.collection("custom-furnitures").add({
       title,
       description,
       theme,
       roomType,
+      technologies,
       images: [],
       createdAt: new Date().toISOString(),
     });
@@ -60,7 +75,7 @@ export const POST = async (request: Request) => {
       message: "Projekt utworzony poprawnie",
       id: projectId,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Błąd Firebase Admin:", error);
 
     if (docRef) {
@@ -72,7 +87,10 @@ export const POST = async (request: Request) => {
     }
 
     return NextResponse.json(
-      { message: "Błąd serwera", error: error.message },
+      {
+        message: "Błąd serwera",
+        error: error instanceof Error ? error.message : "Nieznany błąd",
+      },
       { status: 500 },
     );
   }

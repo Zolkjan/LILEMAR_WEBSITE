@@ -10,9 +10,9 @@ import { useGSAP } from "@gsap/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Moon, Sun, ArrowRight, Share2 } from "lucide-react";
+import { ChevronLeft, Moon, Sun, Share2 } from "lucide-react";
 import { getFetcher } from "@/constans/apiFetcherFunction";
-import { VisualisationType } from "@/types";
+import { CustomFurnitureType } from "@/types";
 import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {
@@ -25,8 +25,12 @@ const CustomFurniturePage = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("details");
 
-  const { data: projectData, isLoading } = useSWR<VisualisationType>(
+  const { data: projectData, isLoading } = useSWR<CustomFurnitureType>(
     projectId ? `/api/custom-furnitures/${projectId}` : null,
+    getFetcher,
+  );
+  const { data: technologies = [] } = useSWR<{ id: string; label: string }[]>(
+    "/api/technologies",
     getFetcher,
   );
 
@@ -69,6 +73,12 @@ const CustomFurniturePage = () => {
     );
 
   if (!projectData) return null;
+
+  const projectTechnologies = (projectData.technologies ?? []).map(
+    (technologyId) =>
+      technologies.find((technology) => technology.id === technologyId)
+        ?.label ?? technologyId,
+  );
 
   return (
     <div
@@ -125,12 +135,19 @@ const CustomFurniturePage = () => {
               {projectData.description}
             </p>
 
-            <div className="reveal-text pt-6">
-              <Button className="bg-foreground text-background hover:bg-primary hover:text-primary-foreground rounded-full h-16 px-12 text-[10px] font-black uppercase tracking-[0.3em] transition-all group">
-                {t("startProject")}
-                <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" />
-              </Button>
-            </div>
+            {projectTechnologies.length > 0 && (
+              <div className="reveal-text flex flex-wrap gap-2">
+                {projectTechnologies.map((technology) => (
+                  <Badge
+                    key={technology}
+                    variant="outline"
+                    className="border-primary/40 text-primary px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.15em]"
+                  >
+                    {technology}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
